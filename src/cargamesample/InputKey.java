@@ -7,7 +7,7 @@ import javafx.scene.input.KeyCode;
 //キー入力の状態をKeyEventから受け取り保持してくれる
 public class InputKey {
 
-    HashMap<KeyCode, Boolean> map = new HashMap<KeyCode, Boolean>();
+    private HashMap<KeyCode, Boolean> map = new HashMap<KeyCode, Boolean>();
 
     //キーイベントの内容を自身に格納する(押された)
     public void keyPressed(KeyCode keyCode){

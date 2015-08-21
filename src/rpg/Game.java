@@ -10,7 +10,11 @@ public abstract class Game implements Runnable {
 	public void run() {
 		Sequence seq = getPrimarySequence();
 		while (RPGApp.gameContinue) {
-			seq.execute();
+			try {
+				seq.execute();
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 			seq = seq.getNextSequence();
 			try {
 				Thread.sleep(1000/60);

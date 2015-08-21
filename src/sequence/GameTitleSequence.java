@@ -1,12 +1,11 @@
 package sequence;
 
-import static javafx.scene.input.KeyCode.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import rpg.RPGApp;
 
 public class GameTitleSequence extends Sequence {
-	public void execute() {
-
+	public void execute() throws InterruptedException {
 
 		while(RPGApp.gameContinue){
 
@@ -16,16 +15,12 @@ public class GameTitleSequence extends Sequence {
 			RPGApp.gc.fillText("Game", 320, 240);
 			RPGApp.gc.fillText("Game  Title  Sequence", 320, 240);
 
-			if (RPGApp.inputKey.checkStateKey(SPACE)) { // ゲーム本編画面へ
+			if (RPGApp.inputKey.checkStateKey(KeyCode.ENTER)) { // ゲーム本編画面へ
 				update(new GameMainSequence());
 				return;
 			}
 
-			try {
-				Thread.sleep(1000/60);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			Thread.sleep(1000/60);
 		}
 	}
 

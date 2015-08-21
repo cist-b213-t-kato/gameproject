@@ -12,7 +12,7 @@ public abstract class Sequence {
 	}
 
 	//
-	public void execute() {
+	public void execute() throws InterruptedException {
 //		RPGApp.gc.fillText("piyo", 320, 240);
 	}
 

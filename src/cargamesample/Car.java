@@ -12,7 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 public abstract class Car {
 
     protected boolean flag;//削除判定に使う
-    protected int count;//カウンタ
+//    protected int count;//カウンタ
     protected double x, y;//座標
     protected double width, height;//幅と高さ
 
@@ -21,20 +21,21 @@ public abstract class Car {
                 && target.getX() < this.getX() + this.getWidth()
                 && this.getY() < target.getY() + target.getHeight()
                 && target.getY() < this.getY() + this.getHeight())
-        {            
+        {
             return true;
         }else{
             return false;
         }
-        
+
+
     }
-    
+
      //以下ゲッター
-     
+
     public boolean isFlag() {
         return flag;
     }
-    
+
     public double getX() {
         return x;
     }
@@ -52,7 +53,7 @@ public abstract class Car {
     }
 
     //以下セッター
-    
+
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
@@ -72,7 +73,7 @@ public abstract class Car {
     public void setHeight(double h) {
         this.height = h;
     }
-    
+
     abstract public void graph(GraphicsContext gc);
-    
+
 }

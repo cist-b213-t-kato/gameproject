@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 //敵機のクラス
 public class EnemyCar extends Car{
     private double spd;
-    
+
     //コンストラクタ
     public EnemyCar(double spd ,double x, double y){
         this.spd = spd;//速度と初期座標を受け取る
@@ -20,18 +20,18 @@ public class EnemyCar extends Car{
         this.setWidth(60);
         this.setHeight(100);
         flag = true;
-        count = 0;
+//        count = 0;
     }
-    
+
     //自身の状態を計算
     public void calc(){
         y += spd;//速度分だけ自身を下に移動
         if(y > 550){//画面外に出たら
             flag = false;//削除対象に
         }
-        count++;
+//        count++;
     }
-    
+
     //自身を描画
     @Override
     public void graph(GraphicsContext gc){

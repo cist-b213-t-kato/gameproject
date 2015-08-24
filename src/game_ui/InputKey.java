@@ -1,4 +1,4 @@
-package cargamesample;
+package game_ui;
 
 import java.util.HashMap;
 
@@ -19,6 +19,7 @@ public class InputKey {
 	private InputKey(){}
 
     private HashMap<KeyCode, Boolean> map = new HashMap<KeyCode, Boolean>();
+    private HashMap<KeyCode, Boolean> beforeMap = map;
 
     //キーイベントの内容を自身に格納する(押された)
     public void keyPressed(KeyCode keyCode){

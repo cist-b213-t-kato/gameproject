@@ -1,11 +1,11 @@
 package sequence;
 
 import game_ui.GameApp;
+import game_ui.InputKey;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import cargamesample.InputKey;
 
 public class CarGameResultSequence implements Sequence{
 

@@ -6,6 +6,7 @@
 package cargamesample;
 
 import static javafx.scene.input.KeyCode.*;
+import game_ui.InputKey;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -40,7 +41,7 @@ public class MyCar extends Car{
         if(inputKey.checkStateKey(DOWN) && y < 480){//下が押されていて、且つ下端でなければ
            y += 6;//下に移動
         }
-        count++;
+//        count++;
     }
 
     //自身を描画

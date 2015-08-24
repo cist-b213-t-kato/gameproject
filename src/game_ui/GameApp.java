@@ -1,6 +1,7 @@
 package game_ui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -8,12 +9,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import cargamesample.InputKey;
 
 public class GameApp extends Application {
 
 	private static Canvas canvas;// 640*480pxのCanvasインスタンスの生成
 	private static GraphicsContext gc;
+	public Pane pane;// Paneインスタンスの生成
 
 	public static GraphicsContext getGC() {
 		return gc;
@@ -24,9 +25,11 @@ public class GameApp extends Application {
 
 		InputKey inputKey = InputKey.getInstance();
 
+		pane = new Pane();
+
 		canvas = new Canvas(640, 480);
 
-		Pane pane = new Pane();// Paneインスタンスの生成
+//		Pane pane = new Pane();// Paneインスタンスの生成
 		pane.getChildren().add(canvas);// canvasをboardにadd
 		Scene scene = new Scene(pane);// シーンインスタンスの生成
 
@@ -46,7 +49,7 @@ public class GameApp extends Application {
 			}
 		});
 
-		Game game = new CarGame();
+		Game game = new CarGame(this);
 
 		// キーを押した時のイベントを設定
 		// GameのInputKeyのKeyPressedメソッドを呼び出す。引数はキーコード。
@@ -58,7 +61,10 @@ public class GameApp extends Application {
 
 		// Gameのrunメソッドを終了させる。
 		// ウィンドウが閉じられた時のイベントを設定
-		primaryStage.setOnCloseRequest(e -> Game.loopFlag = false);
+		primaryStage.setOnCloseRequest(e -> {
+			Platform.exit();
+			Game.loopFlag = false;
+		});
 		// ウィンドウが閉じられた時のイベントを設定
 		primaryStage.setScene(scene);
 		primaryStage.show();

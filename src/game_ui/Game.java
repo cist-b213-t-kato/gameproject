@@ -1,15 +1,18 @@
-package rpg;
+package game_ui;
 
 import javafx.application.Platform;
-import sequence.GameTitleSequence;
 import sequence.Sequence;
 
-public class Game implements Runnable {
+public abstract class Game implements Runnable {
+
+	static Boolean loopFlag = true;
+
+	public abstract Sequence getPrimarySequence();
 
 	@Override
 	public void run() {
 		Runnable r = new Runnable(){
-			Sequence seq = new GameTitleSequence();
+			Sequence seq = getPrimarySequence();
 			@Override
 			public void run() {
 				seq = seq.update();
@@ -17,7 +20,7 @@ public class Game implements Runnable {
 			}
 		};
 
-		while (RPGApp.gameContinue) {
+		while (loopFlag) {
 			Platform.runLater(r);
 			try {
 				Thread.sleep(1000/60);

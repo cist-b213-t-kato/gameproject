@@ -5,14 +5,14 @@
  */
 package cargamesample;
 
-import javafx.scene.canvas.GraphicsContext;
 import static javafx.scene.input.KeyCode.*;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 //自機のクラス
 public class MyCar extends Car{
     InputKey inputKey; //キー入力情報
-    
+
     //コンストラクタ
     public MyCar(InputKey inputKey){
         this.inputKey = inputKey;//InputKeyの参照を受け取る
@@ -20,7 +20,12 @@ public class MyCar extends Car{
         this.height = 100;
         flag = false;
     }
-    
+
+    //コンストラクタ
+    public MyCar(){
+    	this(InputKey.getInstance());
+    }
+
     //自身の状態の計算
     public void calc(){
         if(inputKey.checkStateKey(LEFT) && x > 0){//左が押されていて、且つ左端でなければ
@@ -37,7 +42,7 @@ public class MyCar extends Car{
         }
         count++;
     }
-    
+
     //自身を描画
     @Override
     public void graph(GraphicsContext gc){

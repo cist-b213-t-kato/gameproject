@@ -8,49 +8,46 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import sequence.GameTitleSequence;
-import sequence.Sequence;
 import cargamesample.InputKey;
 
 public class RPGApp extends Application  {
 
-	public final Scene scene;
-	public static final InputKey inputKey = new InputKey();
-	public static Game game;
 	public static Boolean gameContinue = true;
-    Canvas canvas = new Canvas(640,480);//640*480pxのCanvasインスタンスの生成
-    public static GraphicsContext gc;
+    private static Canvas canvas;//640*480pxのCanvasインスタンスの生成
+    private static GraphicsContext gc;
 
-	public RPGApp(){
+    public static GraphicsContext getGC(){
+    	return gc;
+    }
 
+	@Override
+	public void start(Stage primaryStage) {
+
+		InputKey inputKey = InputKey.getInstance();
+
+		canvas = new Canvas(640,480);
 
         Pane pane = new Pane();//Paneインスタンスの生成
         pane.getChildren().add(canvas);//canvasをboardにadd
-        scene = new Scene(pane);//シーンインスタンスの生成
+        Scene scene = new Scene(pane);//シーンインスタンスの生成
 
+        gc = canvas.getGraphicsContext2D();
 
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
 			@Override
 			public void handle(KeyEvent event) {
-//				input.keyPressed(event.getCode());
+				inputKey.keyPressed(event.getCode());
 			}
         });
 
-        game = new Game(){
+		scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
 			@Override
-			public Sequence getPrimarySequence() {
-				return new GameTitleSequence();
+			public void handle(KeyEvent event) {
+				inputKey.keyReleased(event.getCode());
 			}
+        });
 
-        };//ゲームインスタンスの生成
-
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		new RPGApp();
-
-        gc = canvas.getGraphicsContext2D();
+        Game game = new Game();
 
         //キーを押した時のイベントを設定
         //GameのInputKeyのKeyPressedメソッドを呼び出す。引数はキーコード。
@@ -66,6 +63,8 @@ public class RPGApp extends Application  {
         //ウィンドウが閉じられた時のイベントを設定
         primaryStage.setScene(scene);
         primaryStage.show();
+
+//		gc.fillText("HelloWorld", 320, 240);
 
         new Thread(game).start();//ゲームスレッドの開始
 

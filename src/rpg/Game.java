@@ -1,21 +1,26 @@
 package rpg;
 
+import sequence.GameTitleSequence;
 import sequence.Sequence;
 
-public abstract class Game implements Runnable {
+public class Game implements Runnable {
 
-	abstract public Sequence getPrimarySequence();
+	Sequence seq = new GameTitleSequence();
 
 	@Override
 	public void run() {
-		Sequence seq = getPrimarySequence();
-		while (RPGApp.gameContinue) {
-			try {
-				seq.execute();
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
+
+		Runnable r = new Runnable(){
+			@Override
+			public void run() {
+				seq = seq.update();
+				System.out.println(seq);
 			}
-			seq = seq.getNextSequence();
+		};
+		while (RPGApp.gameContinue) {
+
+			r.run();
+//			Platform.runLater(r);
 			try {
 				Thread.sleep(1000/60);
 			} catch (InterruptedException e) {

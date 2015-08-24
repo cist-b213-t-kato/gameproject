@@ -7,6 +7,17 @@ import javafx.scene.input.KeyCode;
 //キー入力の状態をKeyEventから受け取り保持してくれる
 public class InputKey {
 
+	private static InputKey mInstance;
+
+	public static InputKey getInstance(){
+		if(mInstance==null){
+			mInstance = new InputKey();
+		}
+		return mInstance;
+	}
+
+	private InputKey(){}
+
     private HashMap<KeyCode, Boolean> map = new HashMap<KeyCode, Boolean>();
 
     //キーイベントの内容を自身に格納する(押された)
@@ -28,3 +39,5 @@ public class InputKey {
         }
     }
 }
+
+

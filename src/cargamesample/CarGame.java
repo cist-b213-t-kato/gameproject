@@ -5,13 +5,10 @@
  */
 package cargamesample;
 
+import static javafx.scene.input.KeyCode.*;
+
 import java.util.ArrayList;
 import java.util.List;
-import javafx.application.Platform;
-import javafx.scene.canvas.GraphicsContext;
-import static javafx.scene.input.KeyCode.SPACE;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 public abstract class CarGame implements Runnable {
 
@@ -23,7 +20,7 @@ public abstract class CarGame implements Runnable {
 
     //コンストラクタ
     public CarGame() {
-        inputKey = new InputKey();
+        inputKey = InputKey.getInstance();
         loopFlag = true;
         count = 0;
         myCar = new MyCar(inputKey);
@@ -61,7 +58,7 @@ public abstract class CarGame implements Runnable {
         if (count % 60 == 0) {//1秒置きに
             enemyCarList.add(new EnemyCar(3 + Math.random() * 7, Math.random() * 640, -50));//敵機を生成してリストに追加
         }
-        
+
         //自機の計算
         myCar.calc();
 

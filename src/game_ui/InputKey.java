@@ -9,6 +9,12 @@ public class InputKey {
 
 	private static InputKey mInstance;
 
+    private HashMap<KeyCode, Integer> map;
+
+	private InputKey(){
+		map = new HashMap<KeyCode, Integer>();
+	}
+
 	public static InputKey getInstance(){
 		if(mInstance==null){
 			mInstance = new InputKey();
@@ -16,29 +22,36 @@ public class InputKey {
 		return mInstance;
 	}
 
-	private InputKey(){}
-
-    private HashMap<KeyCode, Boolean> map = new HashMap<KeyCode, Boolean>();
-    private HashMap<KeyCode, Boolean> beforeMap = map;
-
     //キーイベントの内容を自身に格納する(押された)
     public void keyPressed(KeyCode keyCode){
-        map.put(keyCode, true);
+
+    	//こんなコード書いたらダメです
+    	Thread thread = new Thread(()->{
+            map.put(keyCode, 1);
+            try {
+				Thread.sleep(1000/60);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+            map.put(keyCode, 0);
+    	});
+    	thread.start();
     }
 
     //キーイベントの内容を自身に格納する(離された)
     public void keyReleased(KeyCode keyCode){
-        map.put(keyCode, false);
+        map.put(keyCode, 0);
     }
 
     //引数のキーの状態を返す
     public boolean checkStateKey(KeyCode keyCode){
         if(map.containsKey(keyCode)){
-            return map.get(keyCode);
+            return map.get(keyCode)==1;
         }else{
             return false;
         }
     }
+
 }
 
 

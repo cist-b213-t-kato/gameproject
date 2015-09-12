@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import tetris.TetrisGame;
 
 public class GameApp extends Application {
 
@@ -27,7 +28,7 @@ public class GameApp extends Application {
 
 		pane = new Pane();
 
-		canvas = new Canvas(640, 480);
+		canvas = new Canvas(720, 960);
 
 //		Pane pane = new Pane();// Paneインスタンスの生成
 		pane.getChildren().add(canvas);// canvasをboardにadd
@@ -49,11 +50,19 @@ public class GameApp extends Application {
 			}
 		});
 
-		Game game = new CarGame(this);
+		Game game = new TetrisGame(this);
 
 		// キーを押した時のイベントを設定
 		// GameのInputKeyのKeyPressedメソッドを呼び出す。引数はキーコード。
-		scene.setOnKeyPressed(e -> inputKey.keyPressed(e.getCode()));
+//		scene.setOnKeyPressed(e -> {
+//			inputKey.keyPressed(e.getCode());
+//			System.out.println("なんかが押されてる");
+//
+//		});
+
+		scene.setOnKeyPressed(e->{
+			inputKey.keyPressed(e.getCode());
+		});
 
 		// キーを離した時のイベントを設定
 		// GameのInputKeyのKeyReleasedメソッドを呼び出す。引数はキーコード。
@@ -65,7 +74,6 @@ public class GameApp extends Application {
 			Platform.exit();
 			Game.loopFlag = false;
 		});
-		// ウィンドウが閉じられた時のイベントを設定
 		primaryStage.setScene(scene);
 		primaryStage.show();
 

@@ -10,7 +10,7 @@ public class BlockCell{
 	protected int dx, dy;
 
 	enum BlockCellColor{
-		RED, NONE
+		RED, NONE, BLUE
 	};
 
 	public void setColor(BlockCellColor color){
@@ -18,10 +18,17 @@ public class BlockCell{
     	case RED:
         	rect.setFill(Color.hsb(0, 0.7, 0.8));
         	break;
+    	case BLUE:
+    		rect.setFill(Color.hsb(200, 0.7, 0.8));
+        	break;
     	case NONE:
     		rect.setFill(Color.hsb(0, 0, 0.95));
     		break;
     	}
+	}
+
+	public void setColor(Color c){
+		rect.setFill(c);
 	}
 
     Shape rect;

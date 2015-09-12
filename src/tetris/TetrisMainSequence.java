@@ -3,9 +3,17 @@ package tetris;
 import game_ui.Game;
 import game_ui.GameApp;
 import game_ui.InputKey;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
 import sequence.Sequence;
 import tetris.BlockCell.BlockCellColor;
 
@@ -15,78 +23,198 @@ public class TetrisMainSequence implements Sequence {
 
 	BlockCell[][] board = new BlockCell[10][20];
 
+	class NoneBlockCell extends BlockCell{
+		public NoneBlockCell(int dx, int dy) {
+			super(dx, dy);
+			setColor(BlockCellColor.NONE);
+		}
+
+	}
+
 	public TetrisMainSequence(GameApp ga) {
 		this.ga = ga;
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 20; j++) {
-				board[i][j] = new BlockCell(0, 0);
-				board[i][j].setColor(BlockCellColor.NONE);
+				board[i][j] = new NoneBlockCell(0, 0);
 			}
 		}
 
 	}
 
-	int x = 0, y = -1;
-	int x2 = 3, y2 = 3;
+
+	int counter = 0;
+
+	Tetrimino tetrimino;
+
+	private Tetrimino randomTetrimino(){
+
+		Tetrimino tetrimino;
+
+		Random rnd = new Random();
+
+		int r = rnd.nextInt(4);
+		List<BlockCellColor> list = new ArrayList<>(Arrays.asList(BlockCellColor.RED,BlockCellColor.BLUE));
+		Color color = Color.hsb(rnd.nextInt(256), 0.8, 0.8);//list.get(rnd.nextInt(list.size()));
+
+		if(r==0){
+			tetrimino = new Tetrimino(new BlockCell(0,-1),
+					new BlockCell(-1,0),
+					new BlockCell(1,0),
+					color
+					);
+		}else if(r == 1){
+			tetrimino = new Tetrimino(new BlockCell(0,-1),
+					new BlockCell(1,0),
+					new BlockCell(1,-1),
+					color
+					);
+		}else if(r==2){
+			tetrimino = new Tetrimino(new BlockCell(-1,0),
+					new BlockCell(0,1),
+					new BlockCell(1,1),
+					color
+					);
+		}else{
+			tetrimino = new Tetrimino(new BlockCell(-1,0),
+					new BlockCell(1,0),
+					new BlockCell(2,0),
+					color
+					);
+		}
+
+		tetrimino.x = 4;
+
+		return tetrimino;
+	}
+
+	int score;
 
 	@Override
 	public Sequence update() {
 
-		// board[4][3].rect.setFill(Color.hsb(64, 0.5, 0.8));
-		// board[3][3].rect.setFill(Color.hsb(64, 0.5, 0.8));
-		// board[2][3].rect.setFill(Color.hsb(64, 0.5, 0.8));
-		// board[3][2].rect.setFill(Color.hsb(64, 0.5, 0.8));
-
-		BlockCell b = new BlockCell(0,0);
-		b.setColor(BlockCellColor.RED);
 		InputKey inputKey = InputKey.getInstance();
-		while (Game.loopFlag) {
+		LOOP
+		:while(Game.loopFlag){
 
-//			System.out.println("loop");
-			if (inputKey.checkStateKey(KeyCode.LEFT)) {
-				x2 = x2 - 1;
-			}
-			if (inputKey.checkStateKey(KeyCode.RIGHT)) {
-				x2 = x2 + 1;
-			}
-			if(inputKey.checkStateKey(KeyCode.DOWN)){
-				y2 = y2 + 1;
-			}
-			if(inputKey.checkStateKey(KeyCode.UP)){
-				y2 = y2 - 1;
-			}
-			if(inputKey.checkStateKey(KeyCode.SPACE)){
-				int xt = x, yt = y;
+			tetrimino = this.randomTetrimino();
 
-				x = yt;
-				y = -xt;
-			}
+			while (Game.loopFlag) {
+				counter = (counter+1)%60;
+				if(counter==0){
+					tetrimino.y += 1;
+				}
 
-			Platform.runLater(() -> {
-//				System.out.println("runLater");
-				GameApp.getGC().clearRect(0, 0, 720, 960);
-
-				for (int i = 0; i < 10; i++) {
-					for (int j = 0; j < 20; j++) {
-						Shape rect = board[i][j].rect;
-						ga.getGC().setFill(rect.getFill());
-						ga.getGC().fillRect(rect.getLayoutX() + 34 * i + 100,
-								rect.getLayoutY() + 34 * j + 100, rect.getScaleX(),
-								rect.getScaleY());
+				int xx = 0, yy = 0;
+				if (inputKey.checkStateKey(KeyCode.LEFT)) {
+					xx += -1;
+				}
+				if (inputKey.checkStateKey(KeyCode.RIGHT)) {
+					xx += 1;
+				}
+				if(inputKey.checkStateKey(KeyCode.DOWN)){
+					yy += 1;
+				}
+				if(inputKey.checkStateKey(KeyCode.UP)){
+					yy += -1;
+				}
+				for(BlockCell b : tetrimino.blocks){
+					if(tetrimino.x+b.dx+xx<0 || tetrimino.x+b.dx+xx>=10){
+						xx = 0;
+						break;
 					}
 				}
-				Shape rect = b.rect;
-				ga.getGC().setFill(rect.getFill());
-				ga.getGC().fillRect(rect.getLayoutX() + 34 * (x2+3+0) + 100,
-						rect.getLayoutY() + 34 * (y2+3+0) + 100, rect.getScaleX(),
-						rect.getScaleY());
-				ga.getGC().fillRect(rect.getLayoutX() + 34 * (x+x2+3+0) + 100,
-						rect.getLayoutY() + 34 * (y+y2+3+0) + 100, rect.getScaleX(),
-						rect.getScaleY());
-			});
+				tetrimino.x += xx;
+				for(BlockCell b : tetrimino.blocks){
+					if(tetrimino.y+b.dy+yy<0 || tetrimino.y+b.dy+yy>=20){
+						yy = 0;
+						break;
+					}
+				}
+				tetrimino.y += yy;
 
-			Game.sleep();
+				if(inputKey.checkStateKey(KeyCode.Z)){
+					boolean flag = true;
+					for(BlockCell b : tetrimino.blocks){
+						if(tetrimino.x+b.dy<0 || tetrimino.x+b.dy>=10 || tetrimino.y-b.dx>20){
+							flag = false;
+						}
+					}
+					if(flag){
+						tetrimino.rotate();
+					}
+				}
 
+
+				for(BlockCell b : tetrimino.blocks){
+					if(tetrimino.y+b.dy<=0 || tetrimino.x+b.dx<0 || tetrimino.x+b.dx>=10){
+						continue;
+					}
+					if(tetrimino.y+b.dy>=19 || !(board[tetrimino.x+b.dx][tetrimino.y+b.dy+1] instanceof NoneBlockCell) ){
+						//テトリミノを置く？
+						for(BlockCell b2 : tetrimino.blocks){
+							board[tetrimino.x+b2.dx][tetrimino.y+b2.dy] = b2;
+						}
+
+						//ブロック消去
+						int deleteLine = 0;
+						int deleteLineHeight = 0;
+						boolean flag2 = false;
+						for(BlockCell b3 : tetrimino.blocks){
+							if(tetrimino.y+b3.dy<0){
+								continue;
+							}
+							boolean flag = true;
+							for(int j=0; j<10; j++){
+								if(board[j][tetrimino.y+b3.dy] instanceof NoneBlockCell){
+									flag = false;
+									break;
+								}
+							}
+							if(flag){
+								flag2 = true;
+								if(deleteLineHeight==tetrimino.y+b3.dy){
+									continue;
+								}
+								deleteLine += 1;
+								deleteLineHeight = deleteLineHeight<tetrimino.y+b3.dy?
+										tetrimino.y+b3.dy:deleteLineHeight;
+							}
+						}
+						if(flag2){
+							score += deleteLine*100;
+							for(int i=deleteLineHeight; i>=0+deleteLine; i--){
+								for(int j=0; j<10; j++){
+									board[j][i] = board[j][i-deleteLine];
+								}
+							}
+						}
+
+						continue LOOP;
+					}
+				}
+
+				Platform.runLater(() -> {
+					GameApp.getGC().clearRect(0, 0, 720, 960);
+					for (int i = 0; i < 10; i++) {
+						for (int j = 0; j < 20; j++) {
+							Shape rect = board[i][j].rect;
+							ga.getGC().setFill(rect.getFill());
+							ga.getGC().fillRect(rect.getLayoutX() + 34 * i + 100,
+									rect.getLayoutY() + 34 * j + 100, rect.getScaleX(),
+									rect.getScaleY());
+							ga.getGC().setFill(Color.GRAY);// 塗りつぶしの色を黒に
+							ga.getGC().setFont(new Font("Meiryo", 66));// フォントをメイリオのサイズ22に
+							ga.getGC().fillText(""+score, 500, 700);
+						}
+					}
+
+					tetrimino.draw();
+
+				});
+
+				Game.sleep();
+
+			}
 		}
 
 		return this;

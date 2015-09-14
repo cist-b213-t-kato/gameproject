@@ -19,7 +19,7 @@ import tetris.BlockCell.BlockCellColor;
 
 public class TetrisMainSequence implements Sequence {
 
-	GameApp ga;
+//	GameApp ga;
 
 	BlockCell[][] board = new BlockCell[10][20];
 
@@ -31,20 +31,26 @@ public class TetrisMainSequence implements Sequence {
 
 	}
 
-	public TetrisMainSequence(GameApp ga) {
-		this.ga = ga;
+	public TetrisMainSequence() {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 20; j++) {
 				board[i][j] = new NoneBlockCell(0, 0);
 			}
 		}
-
 	}
 
+	public TetrisMainSequence(GameApp ga) {
+//		this.ga = ga;
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 20; j++) {
+				board[i][j] = new NoneBlockCell(0, 0);
+			}
+		}
+	}
 
 	int counter = 0;
-
 	Tetrimino tetrimino;
+	Tetrimino bufTetrimino;
 
 	private Tetrimino randomTetrimino(){
 
@@ -52,11 +58,14 @@ public class TetrisMainSequence implements Sequence {
 
 		Random rnd = new Random();
 
-		int r = rnd.nextInt(4);
+		int r = rnd.nextInt(7);
 		List<BlockCellColor> list = new ArrayList<>(Arrays.asList(BlockCellColor.RED,BlockCellColor.BLUE));
-		Color color = Color.hsb(rnd.nextInt(256), 0.8, 0.8);//list.get(rnd.nextInt(list.size()));
+//		Color color = Color.hsb(rnd.nextInt(256), 0.8, 0.8);//list.get(rnd.nextInt(list.size()));
+		int r2 = rnd.nextInt(256);
+		Color color = Color.hsb(r2, 1 - (double)r2/512, 0.8);//list.get(rnd.nextInt(list.size()));
 
 		if(r==0){
+
 			tetrimino = new Tetrimino(new BlockCell(0,-1),
 					new BlockCell(-1,0),
 					new BlockCell(1,0),
@@ -74,6 +83,25 @@ public class TetrisMainSequence implements Sequence {
 					new BlockCell(1,1),
 					color
 					);
+		}else if(r==3){
+			//┏┛
+			tetrimino = new Tetrimino(new BlockCell(1,0),
+					new BlockCell(0,1),
+					new BlockCell(-1,1),
+					color
+					);
+		}else if(r==4){
+			tetrimino = new Tetrimino(new BlockCell(-1,0),
+					new BlockCell(1,0),
+					new BlockCell(1,-1),
+					color
+					);
+		}else if(r==5){
+			tetrimino = new Tetrimino(new BlockCell(-1,0),
+					new BlockCell(1,0),
+					new BlockCell(1,1),
+					color
+					);
 		}else{
 			tetrimino = new Tetrimino(new BlockCell(-1,0),
 					new BlockCell(1,0),
@@ -81,8 +109,6 @@ public class TetrisMainSequence implements Sequence {
 					color
 					);
 		}
-
-		tetrimino.x = 4;
 
 		return tetrimino;
 	}
@@ -93,13 +119,20 @@ public class TetrisMainSequence implements Sequence {
 	public Sequence update() {
 
 		InputKey inputKey = InputKey.getInstance();
+
+		bufTetrimino = this.randomTetrimino();
+
 		LOOP
-		:while(Game.loopFlag){
+		:while(true){
 
-			tetrimino = this.randomTetrimino();
+			tetrimino = bufTetrimino;
+			tetrimino.x = 4;
 
-			while (Game.loopFlag) {
-				counter = (counter+1)%60;
+			bufTetrimino = this.randomTetrimino();
+			bufTetrimino.x = 13;
+
+			while (true) {
+				counter = (counter+1)%(60);
 				if(counter==0){
 					tetrimino.y += 1;
 				}
@@ -114,16 +147,29 @@ public class TetrisMainSequence implements Sequence {
 				if(inputKey.checkStateKey(KeyCode.DOWN)){
 					yy += 1;
 				}
-				if(inputKey.checkStateKey(KeyCode.UP)){
-					yy += -1;
-				}
+
 				for(BlockCell b : tetrimino.blocks){
 					if(tetrimino.x+b.dx+xx<0 || tetrimino.x+b.dx+xx>=10){
 						xx = 0;
 						break;
 					}
 				}
+
+//				for(BlockCell b : tetrimino.blocks){
+//					try{
+//						if(!(board[tetrimino.x+b.dx][tetrimino.y+b.dy] instanceof NoneBlockCell)){
+//							xx = 0;
+//							break;
+//						}
+//					}catch(ArrayIndexOutOfBoundsException e){
+//						System.out.println(tetrimino.x+b.dx);
+//						System.out.println(tetrimino.y+b.dy);
+//						e.printStackTrace();
+//					}
+//				}
+
 				tetrimino.x += xx;
+
 				for(BlockCell b : tetrimino.blocks){
 					if(tetrimino.y+b.dy+yy<0 || tetrimino.y+b.dy+yy>=20){
 						yy = 0;
@@ -132,10 +178,11 @@ public class TetrisMainSequence implements Sequence {
 				}
 				tetrimino.y += yy;
 
-				if(inputKey.checkStateKey(KeyCode.Z)){
+				if(inputKey.checkStateKey(KeyCode.UP)){
 					boolean flag = true;
 					for(BlockCell b : tetrimino.blocks){
-						if(tetrimino.x+b.dy<0 || tetrimino.x+b.dy>=10 || tetrimino.y-b.dx>20){
+						if(tetrimino.x+b.dy<0 || tetrimino.x+b.dy>=10
+								|| tetrimino.y-b.dx<0 || tetrimino.y-b.dx>20){
 							flag = false;
 						}
 					}
@@ -152,7 +199,8 @@ public class TetrisMainSequence implements Sequence {
 					if(tetrimino.y+b.dy>=19 || !(board[tetrimino.x+b.dx][tetrimino.y+b.dy+1] instanceof NoneBlockCell) ){
 						//テトリミノを置く？
 						for(BlockCell b2 : tetrimino.blocks){
-							board[tetrimino.x+b2.dx][tetrimino.y+b2.dy] = b2;
+							board[tetrimino.x+b2.dx]
+									[tetrimino.y+b2.dy] = b2;
 						}
 
 						//ブロック消去
@@ -194,21 +242,24 @@ public class TetrisMainSequence implements Sequence {
 				}
 
 				Platform.runLater(() -> {
+					//画面をクリアする
 					GameApp.getGC().clearRect(0, 0, 720, 960);
+
 					for (int i = 0; i < 10; i++) {
 						for (int j = 0; j < 20; j++) {
 							Shape rect = board[i][j].rect;
-							ga.getGC().setFill(rect.getFill());
-							ga.getGC().fillRect(rect.getLayoutX() + 34 * i + 100,
+							GameApp.getGC().setFill(rect.getFill());
+							GameApp.getGC().fillRect(rect.getLayoutX() + 34 * i + 100,
 									rect.getLayoutY() + 34 * j + 100, rect.getScaleX(),
 									rect.getScaleY());
-							ga.getGC().setFill(Color.GRAY);// 塗りつぶしの色を黒に
-							ga.getGC().setFont(new Font("Meiryo", 66));// フォントをメイリオのサイズ22に
-							ga.getGC().fillText(""+score, 500, 700);
+							GameApp.getGC().setFill(Color.GRAY);// 塗りつぶしの色を灰色に
+							GameApp.getGC().setFont(new Font("Meiryo", 66));
+							GameApp.getGC().fillText(""+score, 500, 700);
 						}
 					}
 
 					tetrimino.draw();
+					bufTetrimino.draw();
 
 				});
 
@@ -216,8 +267,6 @@ public class TetrisMainSequence implements Sequence {
 
 			}
 		}
-
-		return this;
 	}
 
 }

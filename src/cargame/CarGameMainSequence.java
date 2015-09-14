@@ -31,7 +31,7 @@ public class CarGameMainSequence implements Sequence {
 
 	@Override
 	public Sequence update() {
-		while(Game.loopFlag){
+		while(true){
 			count += 1;
 			if (count % 10 == 0) {// 1秒置きに
 				enemyCarList.add(new EnemyCar(3 + Math.random() * 7,
@@ -77,7 +77,6 @@ public class CarGameMainSequence implements Sequence {
 			}
 
 		}
-		return this;
 
 	}
 

@@ -4,25 +4,15 @@ import sequence.Sequence;
 
 public abstract class Game implements Runnable {
 
-	public static Boolean loopFlag = true;
-
 	public abstract Sequence getPrimarySequence();
 
 	@Override
 	public void run() {
-//		Runnable r = new Runnable(){
-//			Sequence seq = getPrimarySequence();
-//			@Override
-//			public void run() {
-//				seq = seq.update();
-//				System.out.println(seq);
-//			}
-//		};
 
 		Sequence seq = getPrimarySequence();
-		while (loopFlag) {
-			seq = seq.update();
+		while (true) {
 			System.out.println(seq);
+			seq = seq.update();
 			Game.sleep();
 		}
 

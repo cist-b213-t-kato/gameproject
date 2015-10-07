@@ -73,7 +73,7 @@ public class CarGameMainSequence implements Sequence {
 			if (!myCar.isFlag()) {// 自機が死んでいるなら
 				return new CarGameResultSequence(count);
 			}else{
-//				break;
+
 			}
 
 		}

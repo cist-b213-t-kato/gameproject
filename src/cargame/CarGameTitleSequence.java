@@ -35,7 +35,7 @@ public class CarGameTitleSequence implements Sequence{
         rect2.setRotate(20);
 //        Image s = new Image("");
 
-        System.out.println(rect.intersects(rect2.getBoundsInLocal()));
+//        System.out.println(rect.intersects(rect2.getBoundsInLocal()));
 
         Shape text = new Text(200, 200, "I love you");
 

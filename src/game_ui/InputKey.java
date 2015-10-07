@@ -24,18 +24,10 @@ public class InputKey {
 
     //キーイベントの内容を自身に格納する(押された)
     public void keyPressed(KeyCode keyCode){
-
     	//こんなコード書いたらダメです
-    	Thread thread = new Thread(()->{
-            map.put(keyCode, 1);
-            try {
-				Thread.sleep(1000/60);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-            map.put(keyCode, 0);
-    	});
-    	thread.start();
+        map.put(keyCode, 1);
+		Game.sleep();
+        map.put(keyCode, 0);
     }
 
     //キーイベントの内容を自身に格納する(離された)

@@ -33,7 +33,7 @@ class Actor {
 				DaifugoFSS.p = a.get(i);
 				switch (DaifugoFSS.p) {
 				case 14:
-					System.out.println("1");
+					System.out.println("A");
 					break;
 				case 15:
 					System.out.println("2");
@@ -67,10 +67,10 @@ class Actor {
 			// プレイヤーの手札表示
 			switch (card) {
 			case 14:
-				System.out.print(1 + "  ");
+				System.out.print("A" + "  ");
 				break;
 			case 15:
-				System.out.print(2 + "  ");
+				System.out.print("2" + "  ");
 				break;
 			default:
 				System.out.print(card + "  ");

@@ -1,6 +1,6 @@
 package sequence;
 
-public interface Sequence {
-	public Sequence update();
+public abstract class Sequence {
+	public abstract Sequence update();
 }
 

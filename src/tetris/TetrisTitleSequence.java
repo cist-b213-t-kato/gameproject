@@ -7,7 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
 import sequence.Sequence;
 
-public class TetrisTitleSequence implements Sequence{
+public class TetrisTitleSequence extends Sequence{
 	@Override
 	public Sequence update() {
 		while(true){
@@ -20,7 +20,7 @@ public class TetrisTitleSequence implements Sequence{
 				return new TetrisMainSequence();
 			}
 
-			Game.sleep();
+			Game.loopEnd();
 		}
 	}
 

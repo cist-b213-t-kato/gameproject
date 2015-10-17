@@ -36,6 +36,7 @@ public class GameApp extends Application {
 		// キーを押した時のイベントを設定
 		// GameのInputKeyのKeyPressedメソッドを呼び出す
 		scene.setOnKeyPressed(e->inputKey.keyPressed(e.getCode()));
+//		scene.setOnKeyTyped(e->inputKey.keyPressed(e.getCode()));
 
 		// キーを離した時のイベントを設定
 		// GameのInputKeyのKeyReleasedメソッドを呼び出す

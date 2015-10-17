@@ -3,7 +3,7 @@ package sequence;
 import game_ui.InputKey;
 import javafx.scene.input.KeyCode;
 
-public class PauseSequence implements Sequence{
+public class PauseSequence extends Sequence{
 
 	private Sequence parent;
 

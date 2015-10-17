@@ -13,18 +13,29 @@ public abstract class Game implements Runnable {
 		while (true) {
 			System.out.println(seq);
 			seq = seq.update();
-			Game.sleep();
+			Game.loopEnd();
 		}
 
 	}
 
-	public static void sleep(){
+	private static int count;
+
+	public static void loopEnd(){
+		++count;
 		try {
 			Thread.sleep(1000/60);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
+
+	public static int getCount() {
+		return count;
+	}
+
+
+
+
 
 }
 

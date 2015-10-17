@@ -6,6 +6,8 @@ public class HogeApp {
 
 		BigDecimal b = new BigDecimal(10.2);
 
+		System.out.println(b);
+
 
 
 	}

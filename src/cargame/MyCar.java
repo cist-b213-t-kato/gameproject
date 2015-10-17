@@ -29,16 +29,16 @@ public class MyCar extends Car{
 
     //自身の状態の計算
     public void calc(){
-        if(inputKey.checkStateKey(LEFT) && x > 0){//左が押されていて、且つ左端でなければ
+        if(inputKey.checkKeyState(LEFT) && x > 0){//左が押されていて、且つ左端でなければ
            x -= 6;//左に移動
         }
-        if(inputKey.checkStateKey(RIGHT) && x < 640){//右が押されていて、且つ右端でなければ
+        if(inputKey.checkKeyState(RIGHT) && x < 640){//右が押されていて、且つ右端でなければ
            x += 6;//右に移動
         }
-        if(inputKey.checkStateKey(UP) && y > 0){//上が押されていて、且つ上端でなければ
+        if(inputKey.checkKeyState(UP) && y > 0){//上が押されていて、且つ上端でなければ
            y -= 6;//上に移動
         }
-        if(inputKey.checkStateKey(DOWN) && y < 480){//下が押されていて、且つ下端でなければ
+        if(inputKey.checkKeyState(DOWN) && y < 480){//下が押されていて、且つ下端でなければ
            y += 6;//下に移動
         }
 //        count++;

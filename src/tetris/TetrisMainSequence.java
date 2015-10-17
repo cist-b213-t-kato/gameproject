@@ -1,8 +1,8 @@
 package tetris;
 
 import game_ui.Game;
+import game_ui.Game.InputKey;
 import game_ui.GameApp;
-import game_ui.InputKey;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +18,6 @@ import sequence.Sequence;
 import tetris.BlockCell.BlockCellColor;
 
 public class TetrisMainSequence extends Sequence {
-
-	// GameApp ga;
 
 	BlockCell[][] board = new BlockCell[10][20];
 
@@ -118,15 +116,28 @@ public class TetrisMainSequence extends Sequence {
 				}
 
 				int xx = 0, yy = 0;
-				if (inputKey.checkStateKey(KeyCode.LEFT)) {
+				if (inputKey.checkKeyState(KeyCode.LEFT)) {
 					xx += -1;
 				}
-				if (inputKey.checkStateKey(KeyCode.RIGHT)) {
+				if (inputKey.checkKeyState(KeyCode.RIGHT)) {
 					xx += 1;
 				}
-				if (inputKey.checkStateKey(KeyCode.DOWN)) {
-					System.out.println(inputKey.getKeyPressedCount(KeyCode.DOWN));
+				if (inputKey.checkKeyState(KeyCode.DOWN)) {
 					yy += 1;
+				}
+				if(inputKey.checkKeyState(KeyCode.P)){
+					inputKey.resetKeyState();
+					Platform.runLater(()->{
+						GameApp.getGC().setFont(new Font("Meiryo Bold", 66));
+						GameApp.getGC().setFill(Color.BLACK);
+						GameApp.getGC().fillText("ポーズ中", 250, 400);
+					});
+					while(true){
+						if(inputKey.checkKeyState(KeyCode.P)){
+							break;
+						}
+						Game.loopEnd();
+					}
 				}
 
 				for (BlockCell b : tetrimino.blocks) {
@@ -162,7 +173,7 @@ public class TetrisMainSequence extends Sequence {
 				}
 				tetrimino.y += yy;
 
-				if (inputKey.checkStateKey(KeyCode.UP)) {
+				if (inputKey.checkKeyState(KeyCode.UP)) {
 					boolean flag = true;
 					for (BlockCell b : tetrimino.blocks) {
 						if (tetrimino.x + b.dy < 0 || tetrimino.x + b.dy >= 10

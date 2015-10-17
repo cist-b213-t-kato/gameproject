@@ -27,7 +27,7 @@ public class CarGameResultSequence implements Sequence{
         gc.fillText("score:"+score, 0, 180);//テキストを指定の位置に描画
         gc.fillText("SPACEキーでもういちど", 0, 220);//テキストを指定の位置に描画
 
-        if(InputKey.getInstance().checkStateKey(KeyCode.SPACE)){
+        if(InputKey.getInstance().checkKeyState(KeyCode.SPACE)){
         	return new CarGameMainSequence();
         }
 

@@ -1,5 +1,6 @@
 package game_ui;
 
+import game_ui.Game.InputKey;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -13,7 +14,7 @@ public class GameApp extends Application {
 
 	private static Canvas canvas;// 640*480pxのCanvasインスタンスの生成
 	private static GraphicsContext gc;
-	public Pane pane;// Paneインスタンスの生成
+	public static Pane pane;// Paneインスタンスの生成
 
 	public static GraphicsContext getGC() {
 		return gc;

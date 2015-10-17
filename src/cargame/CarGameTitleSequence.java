@@ -51,7 +51,7 @@ public class CarGameTitleSequence implements Sequence{
         gc.setFont(new Font("Meiryo", 42));//フォントをメイリオのサイズ42に
         gc.fillText("PRESS SPACEKEY", 150, 240);//テキストを指定の位置に描画
 
-        if (InputKey.getInstance().checkStateKey(SPACE)) {//スペースキーが押されたら
+        if (InputKey.getInstance().checkKeyState(SPACE)) {//スペースキーが押されたら
         	return new CarGameMainSequence();
         }
 		return this;

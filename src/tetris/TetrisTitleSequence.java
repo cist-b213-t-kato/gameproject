@@ -1,8 +1,8 @@
 package tetris;
 
 import game_ui.Game;
+import game_ui.Game.InputKey;
 import game_ui.GameApp;
-import game_ui.InputKey;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
 import sequence.Sequence;

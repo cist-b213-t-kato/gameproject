@@ -1,8 +1,8 @@
 package tetris;
 
 import game_ui.Game;
+import game_ui.Game.InputKey;
 import game_ui.GameApp;
-import game_ui.InputKey;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,20 +32,13 @@ public class TetrisMainSequence implements Sequence {
 	}
 
 	public TetrisMainSequence() {
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 20; j++) {
-				board[i][j] = new NoneBlockCell(0, 0);
-			}
-		}
-	}
 
-	public TetrisMainSequence(GameApp ga) {
-//		this.ga = ga;
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 20; j++) {
 				board[i][j] = new NoneBlockCell(0, 0);
 			}
 		}
+
 	}
 
 	int counter = 0;
@@ -122,6 +115,8 @@ public class TetrisMainSequence implements Sequence {
 
 		bufTetrimino = this.randomTetrimino();
 
+		int musicNum = -1;
+
 		LOOP
 		:while(true){
 
@@ -130,6 +125,15 @@ public class TetrisMainSequence implements Sequence {
 
 			bufTetrimino = this.randomTetrimino();
 			bufTetrimino.x = 13;
+
+			if(musicNum < score/500){
+				musicNum = score/500;
+				if(musicNum%2 == 0){
+					Game.mediaplay("cyber07.mp3");
+				}else if(musicNum%2 == 1){
+					Game.mediaplay("cyber08.mp3");
+				}
+			}
 
 			while (true) {
 				counter = (counter+1)%(60);

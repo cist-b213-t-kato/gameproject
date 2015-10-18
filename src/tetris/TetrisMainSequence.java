@@ -153,33 +153,15 @@ public class TetrisMainSequence implements Sequence {
 				}
 
 				for(BlockCell b : tetrimino.blocks){
-					if(tetrimino.x+b.dx+xx<0 || tetrimino.x+b.dx+xx>=10){
+					if(tetrimino.x+b.dx+xx<0 || tetrimino.x+b.dx+xx>=10
+							|| tetrimino.y+b.dy+yy<0 || tetrimino.y+b.dy+yy>=20
+							|| !(board[tetrimino.x+b.dx+xx][tetrimino.y+b.dy+yy] instanceof NoneBlockCell) ){
 						xx = 0;
-						break;
-					}
-				}
-
-//				for(BlockCell b : tetrimino.blocks){
-//					try{
-//						if(!(board[tetrimino.x+b.dx][tetrimino.y+b.dy] instanceof NoneBlockCell)){
-//							xx = 0;
-//							break;
-//						}
-//					}catch(ArrayIndexOutOfBoundsException e){
-//						System.out.println(tetrimino.x+b.dx);
-//						System.out.println(tetrimino.y+b.dy);
-//						e.printStackTrace();
-//					}
-//				}
-
-				tetrimino.x += xx;
-
-				for(BlockCell b : tetrimino.blocks){
-					if(tetrimino.y+b.dy+yy<0 || tetrimino.y+b.dy+yy>=20){
 						yy = 0;
 						break;
 					}
 				}
+				tetrimino.x += xx;
 				tetrimino.y += yy;
 
 				if(inputKey.checkStateKey(KeyCode.UP)){
@@ -203,8 +185,7 @@ public class TetrisMainSequence implements Sequence {
 					if(tetrimino.y+b.dy>=19 || !(board[tetrimino.x+b.dx][tetrimino.y+b.dy+1] instanceof NoneBlockCell) ){
 						//テトリミノを置く？
 						for(BlockCell b2 : tetrimino.blocks){
-							board[tetrimino.x+b2.dx]
-									[tetrimino.y+b2.dy] = b2;
+							board[tetrimino.x+b2.dx][tetrimino.y+b2.dy] = b2;
 						}
 
 						//ブロック消去

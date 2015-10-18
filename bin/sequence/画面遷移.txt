@@ -1,0 +1,52 @@
+
+  class Game {
+  	Sequence currentSequence = new FirstSequence();
+  	
+  	while(true){
+      currentSequence.run();
+      currentSequence = currentSequence.getNextSequence();
+    }
+  
+  }
+  
+  abstract class Sequence {
+    private Sequence nextSequence = this;
+    abstract public void run();
+    public Sequence getNextSequence(){
+      return nextSequence;
+    }
+  }
+  
+  class GameTitleSequence extends Sequence {  
+    public void run(){
+      if(){  //ゲーム本編画面へ
+        nextSequence = new GameMain();
+      }
+    }
+    
+  }
+  
+  class GameMainSequence extends Sequence {
+    public GameMain(){}
+    
+    public void run(){
+      if(){ //タイトル画面に行きたい
+        nextSequence = new GameTitle();
+      }
+    }
+    
+  }
+  
+  
+  
+  class GameMenu extends Sequence {
+    public GameMenu(){}
+    
+    public void run(){
+      if(){ //タイトル画面に行きたい
+        nextSequence = new GameTitle();
+      }
+    }
+    
+  }
+  

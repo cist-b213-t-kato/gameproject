@@ -1,0 +1,42 @@
+
+interface Event{
+  public void execute();
+}
+
+abstract class CommandEvent implements Event { 
+  protected Unit recieve;
+  public void setRecieve(Unit r){
+    recieve = r;
+  }
+}
+
+class AttackEvent extends {
+  protected Unit target;
+  public void setTarget(Unit t){
+    target = t;
+  }
+  @Override
+  public void execute(){
+    target.hitPoint.decrease(recieve.power.getValue());
+    target.acceptEvent(this);
+  }
+}
+
+class Unit{
+  CommandEvent commandEvent;
+  
+  public final void setCommand(CommandEvent c){
+    commandEvent = c;
+    commandEvent.setRecieve(this);
+  }
+  
+}
+    
+    
+u = new Unit();  
+CommandEvent c = new AttackEvent();
+c.setTarget(u2);
+u.setCommand(c);
+
+
+

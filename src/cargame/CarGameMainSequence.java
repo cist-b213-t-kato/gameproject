@@ -68,7 +68,7 @@ public class CarGameMainSequence implements Sequence {
 				gc.fillText("カウント" + count, 0, 20);// テキストを指定の位置に描画
 				gc.fillText("" + enemyCarList.size(), 0, 68);// テキストを指定の位置に描画
 			});
-			Game.sleep();
+			Game.loopEnd();
 
 			if (!myCar.isFlag()) {// 自機が死んでいるなら
 				return new CarGameResultSequence(count);

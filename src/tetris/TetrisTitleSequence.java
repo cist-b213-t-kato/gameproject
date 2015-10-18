@@ -20,7 +20,7 @@ public class TetrisTitleSequence implements Sequence{
 				return new TetrisMainSequence();
 			}
 
-			Game.sleep();
+			Game.loopEnd();
 		}
 	}
 

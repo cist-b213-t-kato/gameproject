@@ -263,7 +263,7 @@ public class TetrisMainSequence implements Sequence {
 
 				});
 
-				Game.sleep();
+				Game.loopEnd();
 
 			}
 		}

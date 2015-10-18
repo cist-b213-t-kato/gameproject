@@ -24,10 +24,9 @@ public class InputKey {
 
     //キーイベントの内容を自身に格納する(押された)
     public void keyPressed(KeyCode keyCode){
-    	//こんなコード書いたらダメです
-        map.put(keyCode, 1);
-		Game.sleep();
-        map.put(keyCode, 0);
+    	if(map.containsKey(keyCode)==false || map.get(keyCode)==0){
+    		map.put(keyCode, Game.getCount());
+    	}
     }
 
     //キーイベントの内容を自身に格納する(離された)
@@ -37,11 +36,20 @@ public class InputKey {
 
     //引数のキーの状態を返す
     public boolean checkStateKey(KeyCode keyCode){
-        if(map.containsKey(keyCode)){
-            return map.get(keyCode)==1;
-        }else{
-            return false;
-        }
+    	if(map.containsKey(keyCode)==false || map.get(keyCode)==0){
+    		return false;
+    	}else{
+	    	int cnt = Game.getCount() - keyPressedCount(keyCode);
+	    	return cnt==1 || cnt>=30 && cnt%2==0;
+    	}
+    }
+
+    public int keyPressedCount(KeyCode keyCode){
+    	if(map.containsKey(keyCode)==true){
+    		return map.get(keyCode);
+    	}else{
+    		return 0;
+    	}
     }
 
 }

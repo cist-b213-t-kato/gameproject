@@ -95,11 +95,7 @@ public abstract class Game implements Runnable {
 	    }
 
 	    public int keyPressedCount(KeyCode keyCode){
-	    	if(map.containsKey(keyCode)==true){
-	    		return map.get(keyCode);
-	    	}else{
-	    		return 0;
-	    	}
+    		return map.getOrDefault(keyCode, 0);
 	    }
 
 	}

@@ -20,6 +20,11 @@ import tetris.BlockCell.BlockCellColor;
 public class TetrisMainSequence implements Sequence {
 
 	BlockCell[][] board = new BlockCell[10][20];
+	int timeCounter;
+	Tetrimino tetrimino;
+	Tetrimino nextTetrimino;
+	int musicNum;
+	int score;
 
 	class NoneBlockCell extends BlockCell {
 		public NoneBlockCell(int dx, int dy) {
@@ -35,10 +40,6 @@ public class TetrisMainSequence implements Sequence {
 			}
 		}
 	}
-
-	int counter = 0;
-	Tetrimino tetrimino;
-	Tetrimino nextTetrimino;
 
 	private Tetrimino createTetrimino() {
 
@@ -82,7 +83,8 @@ public class TetrisMainSequence implements Sequence {
 
 	public void rotate(Tetrimino t){
 		for(BlockCell b : t.blocks){
-			int xt = b.dx, yt = b.dy;
+			int xt = b.dx;
+			int yt = b.dy;
 			b.dx = yt;
 			b.dy = -xt;
 		}
@@ -92,9 +94,9 @@ public class TetrisMainSequence implements Sequence {
 		return x>=0 && x<10	&& y>=0 && y<20 && board[x][y] instanceof NoneBlockCell;
 	}
 
-	public boolean checkMove(int xx, int yy){
+	public boolean checkMove(int x, int y){
 		for (BlockCell b : tetrimino.blocks) {
-			if(!validate(tetrimino.x + b.dx + xx, tetrimino.y + b.dy + yy)){
+			if(!validate(tetrimino.x + b.dx + x, tetrimino.y + b.dy + y)){
 				return false;
 			}
 		}
@@ -111,8 +113,8 @@ public class TetrisMainSequence implements Sequence {
 	}
 
 	public void putTetrimino(){
-		for (BlockCell b2 : tetrimino.blocks) {
-			board[tetrimino.x + b2.dx][tetrimino.y + b2.dy] = b2;
+		for (BlockCell b : tetrimino.blocks) {
+			board[tetrimino.x + b.dx][tetrimino.y + b.dy] = b;
 		}
 	}
 
@@ -182,8 +184,6 @@ public class TetrisMainSequence implements Sequence {
 	}
 
 
-	int musicNum = -1;
-
 
 	public void loopInit(){
 		tetrimino = nextTetrimino;
@@ -203,18 +203,16 @@ public class TetrisMainSequence implements Sequence {
 		}
 	}
 
-	int score;
-
-
-
 	@Override
 	public Sequence update() {
 
 		InputKey inputKey = InputKey.getInstance();
-
+		timeCounter = 0;
+		musicNum = -1;
+		score = 0;
 		nextTetrimino = createTetrimino();
 
-		Game.mediaplay("cyber07.mp3");
+		Game.mediaplay("dinamobushka.mp3");
 
 		loopInit();
 		while (!isDead()) {
@@ -223,8 +221,8 @@ public class TetrisMainSequence implements Sequence {
 
 			int xx = 0, yy = 0;
 
-			counter = (counter + 1) % (600000);
-			if (counter%(200000/(score+5000)) == 0) {
+			timeCounter = (timeCounter + 1) % (600000);
+			if (timeCounter%(200000/(score+5000)) == 0) {
 				yy += 1;
 			}
 

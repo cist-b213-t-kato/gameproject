@@ -80,8 +80,6 @@ public class TetrisMainSequence implements Sequence {
 		return tetrimino;
 	}
 
-
-
 	public void rotate(Tetrimino t){
 		for(BlockCell b : t.blocks){
 			int xt = b.dx, yt = b.dy;
@@ -129,25 +127,19 @@ public class TetrisMainSequence implements Sequence {
 
 	public void deleteLines(){
 		int deleteCount = 0;
-		int top = 0;
-		for (BlockCell b3 : tetrimino.blocks) {
-			if (tetrimino.y + b3.dy < 0) {
-				continue;
-			}
-			if (checkDeleteLine(tetrimino.y + b3.dy)) {
-				if (top == tetrimino.y + b3.dy) {
-					continue;
-				}
-				deleteCount += 1;
-				if(top < tetrimino.y + b3.dy ){
-					top = tetrimino.y + b3.dy;
+		int bottom = 0;
+		for (BlockCell b : tetrimino.blocks) {
+			if (checkDeleteLine(tetrimino.y + b.dy)) {
+				if(bottom < tetrimino.y + b.dy ){
+					bottom = tetrimino.y + b.dy;
+					deleteCount += 1;
 				}
 			}
 		}
 
 		if (deleteCount>0) {
 			score += deleteCount * 100;
-			for (int i = top; i >= deleteCount; i--) {
+			for (int i = bottom; i >= deleteCount; i--) {
 				for (int j = 0; j < 10; j++) {
 					board[j][i] = board[j][i - deleteCount];
 				}
@@ -266,16 +258,6 @@ public class TetrisMainSequence implements Sequence {
 			}
 
 			for (BlockCell b : tetrimino.blocks) {
-//				if(!validate(tetrimino.x + b.dx, tetrimino.y + b.dy)){
-//					continue;
-//				}
-//				if ((tetrimino.y + b.dy >= 19
-//						|| !(board[tetrimino.x + b.dx][tetrimino.y + b.dy + 1] instanceof NoneBlockCell))
-//						&& yy>=1) {
-//					putTetrimino();
-//					deleteLines();
-//					loopInit();
-//				}
 				if(!validate(tetrimino.x + b.dx, tetrimino.y + b.dy+1) && yy>=1){
 					putTetrimino();
 					deleteLines();

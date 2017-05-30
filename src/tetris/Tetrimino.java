@@ -34,14 +34,6 @@ public class Tetrimino {
 		blocks[3].setColor(c);
 	}
 
-	public void rotate(){
-		for(BlockCell b : blocks){
-			int xt = b.dx, yt = b.dy;
-			b.dx = yt;
-			b.dy = -xt;
-		}
-	}
-
 	public void draw(){
 		for(BlockCell b : blocks){
 			Shape rect = b.rect;

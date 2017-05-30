@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import tetris.TetrisGame;
 
@@ -15,6 +16,7 @@ public class GameApp extends Application {
 	private static Canvas canvas;// 640*480pxのCanvasインスタンスの生成
 	private static GraphicsContext gc;
 	public static Pane pane;// Paneインスタンスの生成
+	public static MediaView view;
 
 	public static GraphicsContext getGC() {
 		return gc;
@@ -52,6 +54,12 @@ public class GameApp extends Application {
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
+
+
+		//音声の再生
+		view = new MediaView();
+		GameApp.pane.getChildren().add(view);
+
 
 		Game game = new TetrisGame();
 		new Thread(game).start();// ゲームスレッドの開始

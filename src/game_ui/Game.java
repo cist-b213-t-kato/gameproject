@@ -1,8 +1,12 @@
 package game_ui;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import sequence.Sequence;
 
 public abstract class Game implements Runnable {
@@ -11,17 +15,40 @@ public abstract class Game implements Runnable {
 
 	@Override
 	public void run() {
-
 		Sequence seq = getPrimarySequence();
 		while (true) {
 			System.out.println(seq);
 			seq = seq.update();
 			Game.loopEnd();
 		}
-
 	}
 
-	private static int count;
+	private static MediaPlayer player;
+
+	public static void mediaplay(String p){
+		Path path = Paths.get(p);
+		String movieUri = path.toUri().toString();
+		Media media = new Media(movieUri);
+
+		if(player!=null){
+			player.stop();
+		}
+
+		player = new MediaPlayer(media);
+		GameApp.view.setMediaPlayer(player);
+		player.setCycleCount(Integer.MAX_VALUE);
+		player.play();
+	}
+
+	public static void mediaStop(){
+		player.stop();
+	}
+
+	private static int count = 0;
+
+	public static int getCount(){
+		return count;
+	}
 
 	public static void loopEnd(){
 		++count;
@@ -31,11 +58,6 @@ public abstract class Game implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
-	public static int getCount() {
-		return count;
-	}
-
 
 	public static class InputKey {
 
@@ -56,7 +78,7 @@ public abstract class Game implements Runnable {
 
 	    //キーイベントの内容を自身に格納する(押された)
 	    public void keyPressed(KeyCode keyCode){
-	    	if(!map.containsKey(keyCode) || map.get(keyCode)==0){
+	    	if(map.containsKey(keyCode)==false || map.get(keyCode)==0){
 	    		map.put(keyCode, Game.getCount());
 	    	}
 	    }
@@ -67,25 +89,17 @@ public abstract class Game implements Runnable {
 	    }
 
 	    //引数のキーの状態を返す
-	    public boolean checkKeyState(KeyCode keyCode){
-	    	int cnt = getKeyPressedCount(keyCode);
-	    	return cnt==1 || cnt>=30 && cnt%2==1;
+	    public boolean checkStateKey(KeyCode keyCode){
+	    	if(map.containsKey(keyCode)==false || map.get(keyCode)==0){
+	    		return false;
+	    	}else{
+		    	int cnt = Game.getCount() - keyPressedCount(keyCode);
+		    	return cnt==1 || cnt>=30 && cnt%2==0;
+	    	}
 	    }
 
-	    //キーが叩かれて何カウント経つか
-	    public int getKeyPressedCount(KeyCode keyCode){
-	        if(map.containsKey(keyCode)){
-	        	if(map.get(keyCode)==0){
-	        		return 0;
-	        	}
-	        	return Game.getCount() - map.get(keyCode);
-	        }else{
-	            return 0;
-	        }
-	    }
-
-	    public void resetKeyState(){
-			map = new HashMap<KeyCode, Integer>();
+	    public int keyPressedCount(KeyCode keyCode){
+    		return map.getOrDefault(keyCode, 0);
 	    }
 
 	}

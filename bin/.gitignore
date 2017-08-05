@@ -1,7 +1,9 @@
-/game_ui/
-<<<<<<< HEAD
+/HogeApp.class
 /cargame/
+/daifugo/
+/game_ui/
+/moveobject/
+/rpg/
 /sequence/
-=======
 /tetris/
->>>>>>> foo
+/prototype/

@@ -41,7 +41,9 @@ public abstract class Game implements Runnable {
 	}
 
 	public static void mediaStop(){
-		player.stop();
+		if (player!=null) {
+			player.stop();
+		}
 	}
 
 	private static int count = 0;

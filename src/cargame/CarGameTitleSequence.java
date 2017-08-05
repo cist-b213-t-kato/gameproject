@@ -1,8 +1,9 @@
 package cargame;
 
 import static javafx.scene.input.KeyCode.*;
+
+import game_ui.Game.InputKey;
 import game_ui.GameApp;
-import game_ui.InputKey;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -45,7 +46,7 @@ public class CarGameTitleSequence implements Sequence{
 	        ga.pane.getChildren().add(text);
         });
 
-    	GraphicsContext gc = GameApp.getGC();
+    		GraphicsContext gc = GameApp.getGC();
 		gc.clearRect(0, 0, 640, 480);
         gc.setFill(Color.BLACK);//塗りつぶしの色を黒に
         gc.setFont(new Font("Meiryo", 42));//フォントをメイリオのサイズ42に

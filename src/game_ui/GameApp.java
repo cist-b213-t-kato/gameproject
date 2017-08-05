@@ -13,14 +13,13 @@ import tetris.TetrisGame;
 
 public class GameApp extends Application {
 
-	private static Canvas canvas;// 640*480pxのCanvasインスタンスの生成
-	private static GraphicsContext gc;
+//	private static GraphicsContext gc;
 	public static Pane pane;// Paneインスタンスの生成
 	public static MediaView view;
 
-	public static GraphicsContext getGC() {
-		return gc;
-	}
+//	public static GraphicsContext getGC() {
+//		return gc;
+//	}
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -29,12 +28,10 @@ public class GameApp extends Application {
 
 		pane = new Pane();
 
-		canvas = new Canvas(720, 960);
+		Canvas canvas = new Canvas(720, 960);
 
 		pane.getChildren().add(canvas);// canvasをboardにadd
 		Scene scene = new Scene(pane);// シーンインスタンスの生成
-
-		gc = canvas.getGraphicsContext2D();
 
 		// キーを押した時のイベントを設定
 		// GameのInputKeyのKeyPressedメソッドを呼び出す
@@ -55,13 +52,12 @@ public class GameApp extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
-
 		//音声の再生
 		view = new MediaView();
 		GameApp.pane.getChildren().add(view);
 
-
-		Game game = new TetrisGame();
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		Game game = new TetrisGame(gc);
 		new Thread(game).start();// ゲームスレッドの開始
 
 	}

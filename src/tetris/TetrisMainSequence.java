@@ -4,10 +4,12 @@ import java.util.Random;
 
 import game_ui.Game;
 import game_ui.Game.InputKey;
+import game_ui.GameApp;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import sequence.Sequence;
@@ -24,6 +26,7 @@ public class TetrisMainSequence extends Sequence {
 	private boolean isAlive;
 	private InputKey inputKey;
 	private Random rnd;
+	private int recessTime;
 
 	class NoneBlockCell extends BlockCell {
 		public NoneBlockCell(int dx, int dy) {
@@ -37,6 +40,7 @@ public class TetrisMainSequence extends Sequence {
 		this.isAlive = true;
 		rnd = new Random();
 		board = new BlockCell[10][20];
+		recessTime = 0;
 
 		inputKey = InputKey.getInstance();
 		timeCounter = 0;
@@ -58,36 +62,33 @@ public class TetrisMainSequence extends Sequence {
 
 	private Tetrimino createTetrimino() {
 
-		Tetrimino tetrimino;
-
 		int r = rnd.nextInt(7);
 		int r2 = rnd.nextInt(256);
 		Color color = Color.hsb(r2, 1 - (double) r2 / 512, 0.8);// list.get(rnd.nextInt(list.size()));
 
 		if (r == 0) {
-			tetrimino = new Tetrimino(new BlockCell(0, -1),
+			return new Tetrimino(new BlockCell(0, -1),
 					new BlockCell(-1, 0), new BlockCell(1, 0), color);
 		} else if (r == 1) {
-			tetrimino = new Tetrimino(new BlockCell(0, -1),
+			return new Tetrimino(new BlockCell(0, -1),
 					new BlockCell(1, 0), new BlockCell(1, -1), color);
 		} else if (r == 2) {
-			tetrimino = new Tetrimino(new BlockCell(-1, 0),
+			return new Tetrimino(new BlockCell(-1, 0),
 					new BlockCell(0, 1), new BlockCell(1, 1), color);
 		} else if (r == 3) {
-			tetrimino = new Tetrimino(new BlockCell(1, -1), new BlockCell(0, -1),
-					new BlockCell(-1, 0), color);
+			return new Tetrimino(new BlockCell(1, -1),
+					new BlockCell(0, -1), new BlockCell(-1, 0), color);
 		} else if (r == 4) {
-			tetrimino = new Tetrimino(new BlockCell(-1, 0),
+			return new Tetrimino(new BlockCell(-1, 0),
 					new BlockCell(1, 0), new BlockCell(1, -1), color);
 		} else if (r == 5) {
-			tetrimino = new Tetrimino(new BlockCell(-1, 0),
+			return new Tetrimino(new BlockCell(-1, 0),
 					new BlockCell(1, 0), new BlockCell(1, 1), color);
 		} else {
-			tetrimino = new Tetrimino(new BlockCell(-1, 0),
+			return new Tetrimino(new BlockCell(-1, 0),
 					new BlockCell(1, 0), new BlockCell(2, 0), color);
 		}
 
-		return tetrimino;
 	}
 
 	public void rotate(Tetrimino t){
@@ -144,18 +145,21 @@ public class TetrisMainSequence extends Sequence {
 	}
 
 	public void deleteLines(){
-		int deleteCount = 0;
-		int bottom = 0;
+		int bottom = -1;
+		int head = 21;
 		for (BlockCell b : currentTetrimino.blocks) {
 			if (checkDeleteLine(currentTetrimino.y + b.dy)) {
-				if(bottom < currentTetrimino.y + b.dy ){
+				if ( bottom < currentTetrimino.y + b.dy ) {
 					bottom = currentTetrimino.y + b.dy;
-					deleteCount += 1;
+				}
+				if ( head > currentTetrimino.y + b.dy ) {
+					head = currentTetrimino.y + b.dy;
 				}
 			}
 		}
 
-		if (deleteCount>0) {
+		if (head < 21 && bottom > -1) {
+			int deleteCount = ( bottom - head ) + 1;
 			score += deleteCount * 100;
 			for (int i = bottom; i >= deleteCount; i--) {
 				for (int j = 0; j < 10; j++) {
@@ -163,6 +167,10 @@ public class TetrisMainSequence extends Sequence {
 				}
 			}
 		}
+	}
+
+	private boolean judge() {
+		return false;
 	}
 
 	public void draw(){
@@ -174,28 +182,54 @@ public class TetrisMainSequence extends Sequence {
 			gc.fillText("" + score, 500, 700);
 
 			for (int j = 0; j < 10; j++) {
-				boolean match = false;
-				int yy = 0;
-				for (int i = 0; i < currentTetrimino.blocks.length; i++) {
-					if ( j == currentTetrimino.x + currentTetrimino.blocks[i].dx ) {
-						match = true;
-						if ( yy < currentTetrimino.y + currentTetrimino.blocks[i].dy ) {
-							yy = currentTetrimino.y + currentTetrimino.blocks[i].dy;
-						}
-					}
-				}
 				for (int i = 0; i < 20; i++) {
 					Shape rect = board[j][i].rect;
-					if (board[j][i] instanceof NoneBlockCell && match && i > yy) {
-						gc.setFill(Color.hsb(180, 0.2, 0.95));
-					} else {
-						gc.setFill(rect.getFill());
-					}
+					gc.setFill(rect.getFill());
 					gc.fillRect(
-						rect.getLayoutX() + (BlockCell.blockWidth + 1) * j + 100,
-						rect.getLayoutY() + (BlockCell.blockHeight + 1) * i + 100,
-						rect.getScaleX(), rect.getScaleY());
+						rect.getLayoutX() + (BlockCell.blockWidth + BlockCell.blockWidthPadding) * j + 100,
+						rect.getLayoutY() + (BlockCell.blockHeight + BlockCell.blockHeightPadding) * i + 100,
+						rect.getScaleX(),
+						rect.getScaleY());
 				}
+			}
+
+			// ここ
+//			for (BlockCell b : currentTetrimino.blocks) {
+//				int xx = currentTetrimino.x + b.dx;
+//				for (int i=currentTetrimino.y+b.dy+1; i<20 && board[xx][i] instanceof NoneBlockCell; i++) {
+//				    	Shape rect = new Rectangle();
+//				    	rect.setScaleX(BlockCell.blockWidth);
+//				    	rect.setScaleY(BlockCell.blockHeight);
+//					gc.setFill(Color.hsb(180, 0.2, 0.9));
+//					gc.fillRect(
+//							rect.getLayoutX() + (BlockCell.blockWidth + BlockCell.blockWidthPadding) * (xx) + 100,
+//							rect.getLayoutY() + (BlockCell.blockHeight + BlockCell.blockHeightPadding) * (i) + 100,
+//							rect.getScaleX(),
+//							rect.getScaleY());
+//				}
+//			}
+
+			int minY = 20;
+			for (BlockCell b : currentTetrimino.blocks) {
+				for (int i=0; i < minY; i++) {
+					int xxxx = currentTetrimino.x + b.dx;
+					int yyyy = currentTetrimino.y + b.dy+i;
+					if( yyyy+1>=0 && (yyyy+1>=20 || !(board[xxxx][yyyy+1] instanceof NoneBlockCell)) ){
+						minY = i;
+						break;
+					}
+				}
+			}
+			for (BlockCell b : currentTetrimino.blocks) {
+			    	Shape rect = new Rectangle();
+			    	rect.setScaleX(BlockCell.blockWidth);
+			    	rect.setScaleY(BlockCell.blockHeight);
+				gc.setFill(Color.hsb(180, 0.2, 0.9));
+				gc.fillRect(
+						rect.getLayoutX() + (BlockCell.blockWidth + BlockCell.blockWidthPadding) * (currentTetrimino.x+b.dx) + 100,
+						rect.getLayoutY() + (BlockCell.blockHeight + BlockCell.blockHeightPadding) * (currentTetrimino.y+b.dy+minY) + 100,
+						rect.getScaleX(),
+						rect.getScaleY());
 			}
 
 			for(BlockCell b : currentTetrimino.blocks){
@@ -263,6 +297,7 @@ public class TetrisMainSequence extends Sequence {
 //		}
 	}
 
+
 	@Override
 	public Sequence update() {
 
@@ -306,13 +341,21 @@ public class TetrisMainSequence extends Sequence {
 					}
 
 					currentTetrimino.y += yy;
-//					yy = 1;
+					recessTime = 61;
 				}
 
+				boolean isTouched = false; //いずれかのブロックが積みブロックと接しているときtrue
 				for (BlockCell b : currentTetrimino.blocks) {
 					int xxxx = currentTetrimino.x + b.dx;
 					int yyyy = currentTetrimino.y + b.dy+1;
 					if( yyyy>=0 && (yyyy>=20 || !(board[xxxx][yyyy] instanceof NoneBlockCell)) ){
+						isTouched = true;
+						break;
+					}
+				}
+				if (isTouched) {
+					recessTime += 1;
+					if(recessTime > 60) {
 						for (BlockCell bb : currentTetrimino.blocks) {
 							int xxx = currentTetrimino.x + bb.dx;
 							int yyy = currentTetrimino.y + bb.dy;
@@ -320,14 +363,17 @@ public class TetrisMainSequence extends Sequence {
 								board[xxx][yyy] = bb;
 							}
 						}
+						recessTime = 0;
 						deleteLines();
 						loopInit();
 					}
+				} else {
+					recessTime = 0;
 				}
 
 			} else {
 				if(inputKey.checkStateKey(KeyCode.R)){
-					Game.mediaStop();
+					GameApp.mediaStop();
 					return new TetrisMainSequence(gc);
 				}
 			}

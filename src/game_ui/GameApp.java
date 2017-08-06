@@ -1,5 +1,8 @@
 package game_ui;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import game_ui.Game.InputKey;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -7,26 +10,23 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import tetris.TetrisGame;
 
 public class GameApp extends Application {
 
-//	private static GraphicsContext gc;
-	public static Pane pane;// Paneインスタンスの生成
-	public static MediaView view;
-
-//	public static GraphicsContext getGC() {
-//		return gc;
-//	}
+	private static MediaView view;
+	private static MediaPlayer player;
 
 	@Override
 	public void start(Stage primaryStage) {
 
 		InputKey inputKey = InputKey.getInstance();
 
-		pane = new Pane();
+		Pane pane = new Pane();
 
 		Canvas canvas = new Canvas(720, 960);
 
@@ -54,12 +54,33 @@ public class GameApp extends Application {
 
 		//音声の再生
 		view = new MediaView();
-		GameApp.pane.getChildren().add(view);
+		pane.getChildren().add(view);
 
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		Game game = new TetrisGame(gc);
 		new Thread(game).start();// ゲームスレッドの開始
 
+	}
+
+	public static void mediaplay(String p){
+		Path path = Paths.get(p);
+		String movieUri = path.toUri().toString();
+		Media media = new Media(movieUri);
+
+		if(player!=null){
+			player.stop();
+		}
+
+		player = new MediaPlayer(media);
+		view.setMediaPlayer(player);
+		player.setCycleCount(Integer.MAX_VALUE);
+		player.play();
+	}
+
+	public static void mediaStop(){
+		if (player!=null) {
+			player.stop();
+		}
 	}
 
 	public static void main(String[] args) {

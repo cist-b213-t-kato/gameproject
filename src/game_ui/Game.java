@@ -1,12 +1,8 @@
 package game_ui;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 
 import javafx.scene.input.KeyCode;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import sequence.Sequence;
 
 public abstract class Game implements Runnable {
@@ -20,29 +16,6 @@ public abstract class Game implements Runnable {
 			System.out.println(seq);
 			seq = seq.update();
 			Game.loopEnd();
-		}
-	}
-
-	private static MediaPlayer player;
-
-	public static void mediaplay(String p){
-		Path path = Paths.get(p);
-		String movieUri = path.toUri().toString();
-		Media media = new Media(movieUri);
-
-		if(player!=null){
-			player.stop();
-		}
-
-		player = new MediaPlayer(media);
-		GameApp.view.setMediaPlayer(player);
-		player.setCycleCount(Integer.MAX_VALUE);
-		player.play();
-	}
-
-	public static void mediaStop(){
-		if (player!=null) {
-			player.stop();
 		}
 	}
 

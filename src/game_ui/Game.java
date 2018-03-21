@@ -64,7 +64,7 @@ public abstract class Game implements Runnable {
 	    }
 
 	    //引数のキーの状態を返す
-	    public boolean checkStateKey(KeyCode keyCode){
+	    public boolean isPushed(KeyCode keyCode){
 	    	if(map.containsKey(keyCode)==false || map.get(keyCode)==0){
 	    		return false;
 	    	}else{

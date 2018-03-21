@@ -14,9 +14,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
-import tetris.TetrisGame;
 
-public class GameApp extends Application {
+public abstract class GameApp extends Application {
 
 	private static MediaView view;
 	private static MediaPlayer player;
@@ -57,10 +56,12 @@ public class GameApp extends Application {
 		pane.getChildren().add(view);
 
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		Game game = new TetrisGame(gc);
+		Game game = createGame(gc);
 		new Thread(game).start();// ゲームスレッドの開始
 
 	}
+
+	abstract protected Game createGame(GraphicsContext gc);
 
 	public static void mediaplay(String p){
 		Path path = Paths.get(p);
@@ -81,10 +82,6 @@ public class GameApp extends Application {
 		if (player!=null) {
 			player.stop();
 		}
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 
 }

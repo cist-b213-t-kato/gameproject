@@ -19,8 +19,10 @@ import sequence.Sequence;
 public class CarGameTitleSequence implements Sequence{
 
 	GameApp ga;
+	private GraphicsContext gc;
 
-	public CarGameTitleSequence(GameApp ga){
+	public CarGameTitleSequence(GraphicsContext gc, GameApp ga){
+		this.gc = gc;
 		this.ga = ga;
 	}
 
@@ -46,14 +48,13 @@ public class CarGameTitleSequence implements Sequence{
 	        ga.pane.getChildren().add(text);
         });
 
-    		GraphicsContext gc = GameApp.getGC();
 		gc.clearRect(0, 0, 640, 480);
         gc.setFill(Color.BLACK);//塗りつぶしの色を黒に
         gc.setFont(new Font("Meiryo", 42));//フォントをメイリオのサイズ42に
         gc.fillText("PRESS SPACEKEY", 150, 240);//テキストを指定の位置に描画
 
-        if (InputKey.getInstance().checkKeyState(SPACE)) {//スペースキーが押されたら
-        	return new CarGameMainSequence();
+        if (InputKey.getInstance().isPushed(SPACE)) {//スペースキーが押されたら
+        	return new CarGameMainSequence(gc);
         }
 		return this;
 	}

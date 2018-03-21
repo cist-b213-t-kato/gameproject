@@ -6,7 +6,8 @@
 package cargame;
 
 import static javafx.scene.input.KeyCode.*;
-import game_ui.InputKey;
+
+import game_ui.Game.InputKey;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -29,16 +30,16 @@ public class MyCar extends Car{
 
     //自身の状態の計算
     public void calc(){
-        if(inputKey.checkKeyState(LEFT) && x > 0){//左が押されていて、且つ左端でなければ
+        if(inputKey.isPushed(LEFT) && x > 0){//左が押されていて、且つ左端でなければ
            x -= 6;//左に移動
         }
-        if(inputKey.checkKeyState(RIGHT) && x < 640){//右が押されていて、且つ右端でなければ
+        if(inputKey.isPushed(RIGHT) && x < 640){//右が押されていて、且つ右端でなければ
            x += 6;//右に移動
         }
-        if(inputKey.checkKeyState(UP) && y > 0){//上が押されていて、且つ上端でなければ
+        if(inputKey.isPushed(UP) && y > 0){//上が押されていて、且つ上端でなければ
            y -= 6;//上に移動
         }
-        if(inputKey.checkKeyState(DOWN) && y < 480){//下が押されていて、且つ下端でなければ
+        if(inputKey.isPushed(DOWN) && y < 480){//下が押されていて、且つ下端でなければ
            y += 6;//下に移動
         }
 //        count++;

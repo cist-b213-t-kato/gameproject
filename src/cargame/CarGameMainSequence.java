@@ -1,12 +1,10 @@
 package cargame;
 
-import game_ui.Game;
-import game_ui.GameApp;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import game_ui.Game;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -15,18 +13,21 @@ import sequence.Sequence;
 
 public class CarGameMainSequence implements Sequence {
 
+	private GraphicsContext gc;
+
 	private int count;// ゲームカウンタ
 	protected MyCar myCar;// 自機の参照
 	protected List<EnemyCar> enemyCarList;// 敵機の参照リスト
 
 	// コンストラクタ
-	public CarGameMainSequence() {
+	public CarGameMainSequence(GraphicsContext gc) {
 		enemyCarList = new ArrayList<>();
 		count = 0;
 		myCar = new MyCar();
 		myCar.setFlag(true);// 自機を蘇らせる
 		myCar.setX(320);// 位置を初期化
 		myCar.setY(420);
+		this.gc = gc;
 	}
 
 	@Override
@@ -59,8 +60,7 @@ public class CarGameMainSequence implements Sequence {
 
 			// 描画
 			Platform.runLater(()->{
-				GraphicsContext gc = GameApp.getGC();
-				GameApp.getGC().clearRect(0, 0, 640, 480);
+				gc.clearRect(0, 0, 640, 480);
 				myCar.graph(gc);// 自機の描画
 				enemyCarList.forEach(enemy -> enemy.graph(gc));// 敵機の描画
 				gc.setFill(Color.BLACK);// 塗りつぶしの色を黒に
@@ -71,7 +71,7 @@ public class CarGameMainSequence implements Sequence {
 			Game.loopEnd();
 
 			if (!myCar.isFlag()) {// 自機が死んでいるなら
-				return new CarGameResultSequence(count);
+				return new CarGameResultSequence(gc, count);
 			}else{
 
 			}

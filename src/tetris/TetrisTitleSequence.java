@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import sequence.Sequence;
 
-public class TetrisTitleSequence extends Sequence{
+public class TetrisTitleSequence implements Sequence {
 
 	private GraphicsContext gc;
 
@@ -28,7 +28,7 @@ public class TetrisTitleSequence extends Sequence{
 			gc.fillText("スペースキーでスタート！", 250, 400+100);
 		});
 		while(true){
-			if(InputKey.getInstance().checkStateKey(KeyCode.SPACE)){
+			if(InputKey.getInstance().isPushed(KeyCode.SPACE)){
 				return new TetrisMainSequence(gc);
 			}
 

@@ -6,7 +6,8 @@ import javafx.scene.shape.Shape;
 
 public class Tetrimino {
 
-	public int x, y;	//軸ブロックの絶対位置
+	private int x;
+	private int y;	//軸ブロックの絶対位置
 	BlockCell[] blocks = new BlockCell[4];
 
 	public Tetrimino(BlockCell b1, BlockCell b2, BlockCell b3, Color c){
@@ -25,11 +26,39 @@ public class Tetrimino {
 			Shape rect = b.rect;
 			gc.setFill(rect.getFill());
 			gc.fillRect(
-					rect.getLayoutX() + (BlockCell.blockWidth + BlockCell.blockWidthPadding) * (x+b.dx) + 100,
-					rect.getLayoutY() + (BlockCell.blockHeight + BlockCell.blockHeightPadding) * (y+b.dy) + 100,
+					rect.getLayoutX() + (BlockCell.blockWidth + BlockCell.blockWidthPadding) * (getX()+b.dx) + 100,
+					rect.getLayoutY() + (BlockCell.blockHeight + BlockCell.blockHeightPadding) * (getY()+b.dy) + 100,
 					rect.getScaleX(),
 					rect.getScaleY());
 		}
+	}
+
+	/**
+	 * @return x
+	 */
+	public int getX() {
+		return x;
+	}
+
+	/**
+	 * @param x セットする x
+	 */
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	/**
+	 * @return y
+	 */
+	public int getY() {
+		return y;
+	}
+
+	/**
+	 * @param y セットする y
+	 */
+	public void setY(int y) {
+		this.y = y;
 	}
 
 }

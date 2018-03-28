@@ -30,15 +30,17 @@ public class Controller {
 				final int m = i;
 				final int n = j;
 				imageView.setOnMouseClicked(event->{
-					System.out.println(posStr);
-					if ( turn == 1 ) {
-						board[m][n] = 1;
-						imageView.setImage(new Image("marubatsu/landolt.png"));
-					} else if ( turn == 2 ) {
-						board[m][n] = 2;
-						imageView.setImage(new Image("marubatsu/batsu.jpg"));
+					if ( board[m][n] == 0 ) {
+						System.out.println(posStr);
+						if ( turn == 1 ) {
+							board[m][n] = 1;
+							imageView.setImage(new Image("marubatsu/landolt.png"));
+						} else if ( turn == 2 ) {
+							board[m][n] = 2;
+							imageView.setImage(new Image("marubatsu/batsu.jpg"));
+						}
+						turn = turn % 2 + 1;
 					}
-					turn = turn % 2 + 1;
 				});
 				imageView.setStyle("-fx-alignment:center;");
 				gridPane.add(imageView, i, j);

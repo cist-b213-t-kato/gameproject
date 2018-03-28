@@ -53,8 +53,8 @@ public class Controller {
 
 	@FXML
 	private void initialize() {
-		for ( int i=0; i<15; i++ ) {
-			for ( int j=0; j<15; j++ ) {
+		for ( int i=0; i<columnMax; i++ ) {
+			for ( int j=0; j<rowMax; j++ ) {
 				ImageView imageView = new ImageView(new Image("marubatsu/empty.gif"));
 				imageView.setFitWidth(32);
 				imageView.setFitHeight(32);

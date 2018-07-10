@@ -21,22 +21,24 @@ public class Unit {
         agility = agl;
     }
 
-    public void setCommand(CommandEvent c){
+    public void setCommand(CommandEvent c) {
     	commandEvent = c;
     	commandEvent.setRecieve(this);
     }
 
-    public void execute(){
+    public void execute() {
     	commandEvent.execute();
     }
 
-    public Unit(String name, int hp, int pw, int agl){
+    public Unit(String name, int hp, int pw, int agl) {
     	this(name, new HitPoint(hp), new Power(pw), new Agility(agl));
     }
 
-    public void acceptEvent(Event e){}
+    public void acceptEvent(Event e) {}
 
-    public CommandEvent getCommandEvent(){
+    public void causeDamage() {}
+
+    public CommandEvent getCommandEvent() {
     	return commandEvent;
     }
 

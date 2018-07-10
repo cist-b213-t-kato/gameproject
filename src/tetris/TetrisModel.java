@@ -3,7 +3,7 @@ package tetris;
 import java.util.Map;
 import java.util.Random;
 
-import game_ui.GameApp;
+import game_ui.AbstractGameApp;
 import javafx.scene.paint.Color;
 import tetris.TetrisMainSequence.NoneBlockCell;
 
@@ -185,7 +185,7 @@ public class TetrisModel {
 
 			if(controllMap.get("r")){
 				service.insertScore(score);
-				GameApp.mediaStop();
+				AbstractGameApp.mediaStop();
 			}
 		}
 

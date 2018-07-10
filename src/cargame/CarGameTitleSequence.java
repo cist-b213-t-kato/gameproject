@@ -3,7 +3,7 @@ package cargame;
 import static javafx.scene.input.KeyCode.*;
 
 import game_ui.Game.InputKey;
-import game_ui.GameApp;
+import game_ui.AbstractGameApp;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -18,10 +18,10 @@ import sequence.Sequence;
 
 public class CarGameTitleSequence implements Sequence{
 
-	GameApp ga;
+	AbstractGameApp ga;
 	private GraphicsContext gc;
 
-	public CarGameTitleSequence(GraphicsContext gc, GameApp ga){
+	public CarGameTitleSequence(GraphicsContext gc, AbstractGameApp ga){
 		this.gc = gc;
 		this.ga = ga;
 	}

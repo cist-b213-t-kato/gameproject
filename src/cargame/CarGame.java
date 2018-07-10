@@ -1,14 +1,14 @@
 package cargame;
 
 import game_ui.Game;
-import game_ui.GameApp;
+import game_ui.AbstractGameApp;
 import sequence.Sequence;
 
 public class CarGame extends Game{
 
-	GameApp ga;
+	AbstractGameApp ga;
 
-	public CarGame(GameApp ga){
+	public CarGame(AbstractGameApp ga){
 		this.ga = ga;
 	}
 

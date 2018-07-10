@@ -3,7 +3,7 @@ package game_ui;
 import javafx.scene.canvas.GraphicsContext;
 import tetris.TetrisGame;
 
-public class TetrisGameApp extends GameApp {
+public class TetrisGameApp extends AbstractGameApp {
 
 	public static void main(String[] args) {
 		launch(args);

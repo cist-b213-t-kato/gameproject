@@ -11,4 +11,8 @@ public abstract class CommandEvent implements Event{
 		return "行動";
 	}
 
+    public double reactRate() {
+    	return 0.0;
+    }
+
 }

@@ -15,7 +15,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
-public abstract class GameApp extends Application {
+public abstract class AbstractGameApp extends Application {
 
 	private static MediaView view;
 	private static MediaPlayer player;

@@ -4,7 +4,7 @@ import java.util.Random;
 
 import game_ui.Game;
 import game_ui.Game.InputKey;
-import game_ui.GameApp;
+import game_ui.AbstractGameApp;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -377,7 +377,7 @@ public class TetrisMainSequence implements Sequence {
 
 				if(inputKey.isPushed(KeyCode.R)){
 					service.insertScore(score);
-					GameApp.mediaStop();
+					AbstractGameApp.mediaStop();
 					return new TetrisMainSequence(gc);
 				}
 			}

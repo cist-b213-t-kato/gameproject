@@ -11,4 +11,9 @@ public class CounterAttackCommandEvent extends AttackCommandEvent{
 		return "カウンター";
 	}
 
+	@Override
+	public double reactRate() {
+		return 1.0;
+	}
+
 }

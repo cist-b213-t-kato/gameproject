@@ -1,4 +1,6 @@
-package rpg;
+package rpg.event;
+
+import rpg.Unit;
 
 public class CounterAttackCommandEvent extends AttackCommandEvent{
 
@@ -12,8 +14,8 @@ public class CounterAttackCommandEvent extends AttackCommandEvent{
 	}
 
 	@Override
-	public double reactRate() {
-		return 1.0;
+	public boolean successReact() {
+		return true;
 	}
 
 }

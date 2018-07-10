@@ -1,6 +1,6 @@
-package rpg;
+package rpg.event;
 
-import rpg.event.Event;
+import rpg.Unit;
 
 public abstract class CommandEvent implements Event{
 	protected Unit recieve;
@@ -11,8 +11,8 @@ public abstract class CommandEvent implements Event{
 		return "行動";
 	}
 
-    public double reactRate() {
-    	return 0.0;
+    public boolean successReact() {
+    	return false;
     }
 
 }

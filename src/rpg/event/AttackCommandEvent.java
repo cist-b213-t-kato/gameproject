@@ -1,4 +1,6 @@
-package rpg;
+package rpg.event;
+
+import rpg.Unit;
 
 public class AttackCommandEvent extends CommandEvent{
 	protected Unit target;
@@ -18,8 +20,9 @@ public class AttackCommandEvent extends CommandEvent{
 	@Override
 	public void execute() {
 		System.out.println(recieve.name+"の"+this.getName()+"！");
-		if(target.getCommandEvent().reactRate() >= Math.random()
-				|| ((double)target.agility.getValue()/recieve.agility.getValue())*0.25>=Math.random()){
+		if(target.getCommandEvent().successReact()) {
+
+		} else if (((double)target.agility.getValue()/recieve.agility.getValue())*0.25>=Math.random()) {
 			System.out.println(target.name+"は回避！");
 		}else{
 			int damage = recieve.power.getValue();

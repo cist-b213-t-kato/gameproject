@@ -3,6 +3,9 @@ package rpg;
 import java.util.ArrayList;
 import java.util.List;
 
+import rpg.event.AttackCommandEvent;
+import rpg.event.CounterAttackCommandEvent;
+
 public class BattleApp {
 
 	public BattleApp() {
@@ -26,7 +29,7 @@ public class BattleApp {
 
 		// コマンド入力
 		enemyList.get(0).setCommand(new CounterAttackCommandEvent(partyList.get(0)));
-		partyList.get(0).setCommand(new AttackCommandEvent(partyList.get(0)));
+		partyList.get(0).setCommand(new AttackCommandEvent(enemyList.get(0)));
 
 		List<Unit> battleMember = new ArrayList<>();
 		battleMember.addAll(partyList);

@@ -1,5 +1,6 @@
 package rpg;
 
+import rpg.event.CommandEvent;
 import rpg.event.Event;
 import rpg.status.Agility;
 import rpg.status.HitPoint;

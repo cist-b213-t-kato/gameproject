@@ -16,20 +16,20 @@ import sequence.Sequence;
 
 public class TetrisMainSequence implements Sequence {
 
-	private BlockCell[][] board;
-	private int timeCounter;
-	private Tetrimino currentTetrimino;
-	private Tetrimino nextTetrimino;
-	private int score;
-	private int maxScore;
-	private boolean isAlive;
-	private int recessTime;
-	private Random rnd;
-	private int musicNum;
-	private InputKey inputKey;
-	private GraphicsContext gc;
+	protected BlockCell[][] board;
+	protected int timeCounter;
+	protected Tetrimino currentTetrimino;
+	protected Tetrimino nextTetrimino;
+	protected int score;
+	protected int maxScore;
+	protected boolean isAlive;
+	protected int recessTime;
+	protected Random rnd;
+	protected int musicNum;
+	protected InputKey inputKey;
+	protected GraphicsContext gc;
 
-	private TetrisService service;
+	protected TetrisService service;
 
 	class NoneBlockCell extends BlockCell {
 		public NoneBlockCell(int dx, int dy) {
@@ -38,8 +38,7 @@ public class TetrisMainSequence implements Sequence {
 		}
 	}
 
-	public TetrisMainSequence(GraphicsContext gc) {
-		this.gc = gc;
+	public TetrisMainSequence() {
 		this.isAlive = true;
 		this.service = new TetrisService();
 		rnd = new Random();
@@ -174,102 +173,6 @@ public class TetrisMainSequence implements Sequence {
 		}
 	}
 
-	public void draw(){
-		Platform.runLater(() -> {
-			// 画面をクリアする
-			gc.clearRect(0, 0, 720, 960);
-			gc.setFill(Color.GRAY);// 塗りつぶしの色を灰色に
-			gc.setFont(new Font("Meiryo", 66));
-			gc.fillText("" + score, 500, 700);
-			gc.fillText("" + maxScore, 500, 750);
-
-			for (int j = 0; j < 10; j++) {
-				for (int i = 0; i < 20; i++) {
-					Shape rect = board[j][i].rect;
-					gc.setFill(rect.getFill());
-					gc.fillRect(
-						rect.getLayoutX() + (BlockCell.blockWidth + BlockCell.blockWidthPadding) * j + 100,
-						rect.getLayoutY() + (BlockCell.blockHeight + BlockCell.blockHeightPadding) * i + 100,
-						rect.getScaleX(),
-						rect.getScaleY());
-				}
-			}
-
-			// ここ
-//			for (BlockCell b : currentTetrimino.blocks) {
-//				int xx = currentTetrimino.x + b.dx;
-//				for (int i=currentTetrimino.y+b.dy+1; i<20 && board[xx][i] instanceof NoneBlockCell; i++) {
-//				    	Shape rect = new Rectangle();
-//				    	rect.setScaleX(BlockCell.blockWidth);
-//				    	rect.setScaleY(BlockCell.blockHeight);
-//					gc.setFill(Color.hsb(180, 0.2, 0.9));
-//					gc.fillRect(
-//							rect.getLayoutX() + (BlockCell.blockWidth + BlockCell.blockWidthPadding) * (xx) + 100,
-//							rect.getLayoutY() + (BlockCell.blockHeight + BlockCell.blockHeightPadding) * (i) + 100,
-//							rect.getScaleX(),
-//							rect.getScaleY());
-//				}
-//			}
-
-			int minY = 20;
-			for (BlockCell b : currentTetrimino.blocks) {
-				for (int i=0; i < minY; i++) {
-					int xxxx = currentTetrimino.getX() + b.dx;
-					int yyyy = currentTetrimino.getY() + b.dy+i;
-					if( yyyy+1>=0 && (yyyy+1>=20 || !(board[xxxx][yyyy+1] instanceof NoneBlockCell)) ){
-						minY = i;
-						break;
-					}
-				}
-			}
-			for (BlockCell b : currentTetrimino.blocks) {
-			    	Shape rect = new Rectangle();
-			    	rect.setScaleX(BlockCell.blockWidth);
-			    	rect.setScaleY(BlockCell.blockHeight);
-				gc.setFill(Color.hsb(180, 0.2, 0.9));
-				gc.fillRect(
-						rect.getLayoutX() + (BlockCell.blockWidth + BlockCell.blockWidthPadding) * (currentTetrimino.getX()+b.dx) + 100,
-						rect.getLayoutY() + (BlockCell.blockHeight + BlockCell.blockHeightPadding) * (currentTetrimino.getY()+b.dy+minY) + 100,
-						rect.getScaleX(),
-						rect.getScaleY());
-			}
-
-			for(BlockCell b : currentTetrimino.blocks){
-				Shape rect = b.rect;
-				if ( currentTetrimino.getY()+b.dy < 0 ) {
-					continue;
-				}
-				gc.setFill(rect.getFill());
-				gc.fillRect(
-						rect.getLayoutX() + (BlockCell.blockWidth + BlockCell.blockWidthPadding) * (currentTetrimino.getX()+b.dx) + 100,
-						rect.getLayoutY() + (BlockCell.blockHeight + BlockCell.blockHeightPadding) * (currentTetrimino.getY()+b.dy) + 100,
-						rect.getScaleX(),
-						rect.getScaleY());
-			}
-
-			for(BlockCell b : nextTetrimino.blocks){
-				Shape rect = b.rect;
-				gc.setFill(rect.getFill());
-				gc.fillRect(
-						rect.getLayoutX() + (BlockCell.blockWidth + BlockCell.blockWidthPadding) * (nextTetrimino.getX()+b.dx) + 100,
-						rect.getLayoutY() + (BlockCell.blockHeight + BlockCell.blockHeightPadding) * (nextTetrimino.getY()+b.dy) + 100,
-						rect.getScaleX(),
-						rect.getScaleY());
-			}
-
-			if (!isAlive) {
-				gc.setFill(Color.hsb(1.0, 0.0, 0.0, 0.5));
-				gc.fillRect(0, 0, 720, 960);
-				gc.setFill(Color.hsb(1.0, 0.0, 1.0));
-				gc.setFont(new Font("Meiryo Bold", 66));
-				gc.fillText("げーむおーばー", 150, 400);
-				gc.setFont(new Font("Meiryo", 32));
-				gc.fillText("push R key !", 260, 450);
-			}
-
-		});
-	}
-
 	public void loopInit(){
 		currentTetrimino = nextTetrimino;
 		currentTetrimino.setX(4);
@@ -299,6 +202,13 @@ public class TetrisMainSequence implements Sequence {
 //		}
 	}
 
+	public Sequence next() {
+		return new TetrisMainSequence();
+	}
+
+	public void draw() {
+
+	}
 
 	@Override
 	public Sequence update() {
@@ -378,7 +288,7 @@ public class TetrisMainSequence implements Sequence {
 				if(inputKey.isPushed(KeyCode.R)){
 					service.insertScore(score);
 					AbstractGameApp.mediaStop();
-					return new TetrisMainSequence(gc);
+					return new TetrisMainSequence();
 				}
 			}
 

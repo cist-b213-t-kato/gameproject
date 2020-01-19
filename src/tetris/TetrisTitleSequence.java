@@ -11,25 +11,20 @@ import sequence.Sequence;
 
 public class TetrisTitleSequence implements Sequence {
 
-	private GraphicsContext gc;
+	public Sequence next() {
+		return new TetrisMainSequence();
+	}
 
-	public TetrisTitleSequence(GraphicsContext gc) {
-		this.gc = gc;
+	public void draw() {
+
 	}
 
 	@Override
 	public Sequence update() {
-		Platform.runLater(() -> {
-			gc.clearRect(0, 0, 720, 960);
-			gc.setFill(Color.hsb(1.0, 0.0, 0.2));
-			gc.setFont(new Font("Meiryo Bold", 66));
-			gc.fillText("てとりす", 250, 400);
-			gc.setFont(new Font("Meiryo", 22));
-			gc.fillText("スペースキーでスタート！", 250, 400+100);
-		});
+		draw();
 		while(true){
 			if(InputKey.getInstance().isPushed(KeyCode.SPACE)){
-				return new TetrisMainSequence(gc);
+				return next();
 			}
 
 			Game.loopEnd();

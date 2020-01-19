@@ -14,7 +14,7 @@ public class TetrisGame extends Game {
 
 	@Override
 	public Sequence getPrimarySequence() {
-		return new TetrisTitleSequence(gc);
+		return new TetrisTitleSequenceEx(gc);
 	}
 
 
